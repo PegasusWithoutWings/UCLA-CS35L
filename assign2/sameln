@@ -1,3 +1,9 @@
 #!/bin/bash
 
-find -type f -size $(stat --printf="%s" fuck)c -print0 | xargs -0 -n1 -I{} sh -c "cmp fuck {}&&ln -f fuck {} &> /dev/null"
+files=$(find . -maxdepth 1 -type f) 
+for file1 in $files; do
+  for file2 in $files; do
+    cmp -s $file1 $file2&&ln -f $file1 $file2 &> /dev/null
+  done
+done
+
