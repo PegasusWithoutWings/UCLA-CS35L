@@ -1,7 +1,17 @@
 #!/bin/bash
 
+# Find all the non-empty table elements
 egrep '<td>.+</td>' | \
+# Extract only the Hawaiian terms
 sed -E '1~2d' | \
+# Remove HTML tags
 sed -E 's/<[^>]*>//g' | \
+# Remove tabs and blackspaces
 tr -d '[:blank:]' | \
-tr "A-Z\`" "a-z'"
+# reject any entries that contain non-Hawaiian letters
+egrep [pk\'mnwlhaeiou] | \
+# Convert all letters into lower case
+# Use ASCII apostrophe (') to represent the Hawaiian ‘okina (‘)
+tr "A-Z\`" "a-z'" | \
+# Sort the resulting list of words, removing any duplicates
+sort -u
