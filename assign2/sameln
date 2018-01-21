@@ -1,4 +1,13 @@
 #!/bin/bash
+# Take one argument as directory; finds all regular files immediately under D
+# that are duplicates, and replaces the duplicates with hard links.
+
+# It keeps the file whose name is lexicographically first
+# it prefers files whose name start with "." to other files
+
+# If the script has a problem reading a file (for example, if the file not
+# readable), it will report the error and not treat it as a duplicate of any 
+# file.
 
 files=$(find . -maxdepth 1 -type f | sort)
 for file1 in $files; do
