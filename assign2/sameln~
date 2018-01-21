@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Find all the regular files
+for file in $(find . -maxdepth 1 -type f); do
+    # Find 

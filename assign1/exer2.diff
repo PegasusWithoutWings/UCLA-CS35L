@@ -1,0 +1,52 @@
+--- exer1.html	2018-01-09 19:17:30.892145000 -0800
++++ exer2.html	2018-01-09 19:48:35.688405000 -0800
+@@ -15,7 +15,6 @@
+ 
+ <h2>Laboratory: Linux and Emacs scavenger hunt</h2>
+ 
+-<!-- diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。-->
+ 
+ <p>Instructions: Do this assignment
+ on <samp>lnxsrv06</samp>, <samp>lnxsrv07</samp>,
+@@ -111,7 +110,6 @@
+ 
+ <h2>Homework: Learning to use Emacs</h2>
+ 
+-<!-- DELETE-ME DELETE-ME DELETE-ME -->
+ 
+ <ul>
+  <li>Keith Waclena, <a
+@@ -172,7 +170,6 @@
+ <li>Delete the 18th line, which is an HTML comment. <samp>&lt;!-- HTML comments look like this. --&gt;</samp></li>
+ <li>Delete the HTML comment containing the text
+ "<samp>DELETE-ME DELETE-ME DELETE-ME</samp>".</li>
+-<li>Delete the HTML comment containing the text "<samp>https://en.wikipedia.org/wiki/HTML_comment#Comments</samp>".</li>
+ <li>There are three more HTML comments; delete them too.</li>
+ </ol>
+ 
+@@ -321,9 +318,6 @@
+ 
+ <h2>Submit</h2>
+ 
+-<!-- You can learn more about HTML comments at
+-	<https://en.wikipedia.org/wiki/HTML_comment#Comments>.
+-	-->
+ 
+ <p>Submit the following files.</p>
+ 
+@@ -359,10 +353,6 @@
+ </samp></pre>
+ 
+ <p>should output only a small number of log lines<!---->.</p>
+-<!--
+-<p>Or maybe more lines, if something has gone wrong.</p>
+--<->-
+--->
+ 
+ <hr>
+ <address>
+@@ -377,4 +367,3 @@
+ 
+ </body>
+ </html>
+-<!-- end of HTML resource -->
