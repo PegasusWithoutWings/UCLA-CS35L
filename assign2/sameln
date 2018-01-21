@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files=$(find . -maxdepth 1 -type f) 
+files=$(find . -maxdepth 1 -type f | sort)
 for file1 in $files; do
   for file2 in $files; do
     cmp -s $file1 $file2&&ln -f $file1 $file2 &> /dev/null
