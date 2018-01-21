@@ -1,0 +1,70 @@
+# Lab
+1. man -k COMMAND
+
+2. Command "which cp wc" shows us that cp program is located at /bin/cp while wc is located at /usr/bin/wc.
+
+3. Command "find /usr/bin/?" shows us that there are three such programs: [, w, and X.
+[ is the condition evaluation utility. It evaluates the expression and, if it evaluates to true, returns a zero (true) exit status; otherwise it returns 1 (false). If there is no expression, test also returns 1 (false). 
+w displays who is logged in and what they are doing. 
+X is a portable, network-transparent window system 
+
+4. Command "ls -l $(which emacs)" shows us that it is linked to /etc/alternatives/emacs
+
+5. g+s adds execution mode bit to group user, while o-x clears execution mode bit from other users.
+
+6. find . -mtime -21
+
+7. The previous command shows that below are the files modified in the last 3 weeks.
+.
+./.login
+./.logout
+./.cshrc
+./.profile
+./.bash_logout
+./nsdefault
+./Desktop
+./Documents
+./Downloads
+./.lesshst
+./.Xauthority
+
+8. ls -la /usr/bin | grep ^l | wc -l shows us that there are 350 symbolic links among all the files in directory /usr/lib.
+
+9. find /usr/lib -type f -printf '%T+ %p\n' | sort | head -n 1 shows us that the oldest regular file is /usr/lib/x86_64-redhat-linux5E/include/bits/stdio-lock.h
+
+10. The "locale" command gets its data from the local environment. 
+
+11.
+Buffer-menu-sort
+Buffer-menu-sort-by-column
+ibuffer-invert-sorting
+ibuffer-toggle-sorting-mode
+rmail-sort-by-author
+rmail-sort-by-correspondent
+rmail-sort-by-date
+rmail-sort-by-labels
+rmail-sort-by-lines
+rmail-sort-by-recipient
+rmail-sort-by-subject
+sort-columns
+sort-fields
+sort-lines
+sort-numeric-fields
+sort-pages
+sort-paragraphs
+sort-regexp-fields
+
+12.
+C-M-a moves backward to the beginning of a defun.
+C-M-b moves backward across one balanced expression.
+C-M-c exits from innermost recursive edit.
+C-M-d moves forward down one level of parentheses.
+C-M-e moves forward to the next end of defun.
+C-M-f moves forward across one balanced expression.
+C-M-h puts mark at the end of this defun, point at beginnning.
+
+13. During execution of Lisp code, this character causes a quit directly. At top-level, as an editor command, this simply beeps.
+
+14. Paste last killed text
+
+15. Emacs' dired shows the total used space, the available space and folder's path on top, while ls -l only shows used space on top. The result of dired is sorted by default while ls -l is not. dired by default also shows . and .. folder while ls -l does not.
