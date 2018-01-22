@@ -51,7 +51,7 @@ while the second column will be the ones only in mhwords.
 
 13. So the only word that is only "misspelled" in English is wiki. While with
 comm -13 mewords mhwords | wc -l
-it shows that there are 275 words only "misspelled" in Hawaiian, as expected.
+it shows that there are 273 words only "misspelled" in Hawaiian, as expected.
 Some of these words are:
 the, then, want, write...
 
