@@ -12,38 +12,44 @@ only keep the odd lines that contain the Hawaiian vocabularies.
 sed -E 's/<[^>]*>//g' 
 to remove all the HTML tags.
 
-4. Remove all the blanks with 
+4. Remove all the blanks
 tr -d '[:blank:]'
 
-5. Turn all the upper case letters into lower case with 
-tr "A-Z\`" "a-z'"
+5. Reject terms that contain non-Hawaiian characters
+egrep [pk\'mnwlhaeiou] | \
 
-6. I then saved the cleaned list of Hawaii words to a local file with command 
+6. Turn all the upper case letters into lower case; also convert ` to '; 
+Finally sort and remove duplicated terms
+tr "A-Z\`" "a-z'"
+sort -u
+
+7. I then saved the cleaned list of Hawaii words to a local file with 
+command
 cat hwnwdseng.htm | ./buildwords > hwords
 
-7. Now we can use
+8. Now we can use
 tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - hwords 
 as a Hawaiian word spelling checker. 
 
-8. Counting the number of "misspelled" English words in the website with
+9. Counting the number of "misspelled" English words in the website with
 cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words | wc -l
 we get 181.
 
-9. Counting the number of "misspelled" Hawaiian words in the website with
+10. Counting the number of "misspelled" Hawaiian words in the website with
 cat assign2.html | tr -cs "A-Za-z' '[\n*]' | sort -u | comm -23 - hwords | wc -l
 we get 455.
 
-10. Storing the outputs of the misspelled words in both English and Hawaiian
+11. Storing the outputs of the misspelled words in both English and Hawaiian
 by redirecting the output to local files instead of wc. The English ones are
 stored in mewords, while the Hawaiian ones are stored in mhwords.
 
-11. Finally, we use
+12. Finally, we use
 comm -3 mewords mhwords
 to see if there are words only in either file. The first column of the output
 will be the words only in mewords, the words only "misspelled" in English,
 while the second column will be the ones only in mhwords.
 
-12. So the only word that is only "misspelled" in English is wiki. While with
+13. So the only word that is only "misspelled" in English is wiki. While with
 comm -13 mewords mhwords | wc -l
 it shows that there are 275 words only "misspelled" in Hawaiian, as expected.
 Some of these words are:
