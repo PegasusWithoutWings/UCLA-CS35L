@@ -36,8 +36,8 @@ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words | wc -l
 we get 181.
 
 10. Counting the number of "misspelled" Hawaiian words in the website with
-cat assign2.html | tr -cs "A-Za-z' '[\n*]' | sort -u | comm -23 - hwords | wc -l
-we get 455.
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - hwords | wc -l
+we get 453.
 
 11. Storing the outputs of the misspelled words in both English and Hawaiian
 by redirecting the output to local files instead of wc. The English ones are
