@@ -9,12 +9,17 @@
 # readable), it will report the error and not treat it as a duplicate of any 
 # file.
 
-directory=$1
+# You can improve the efficiency by improving the loop, but it is not my major
+# concern here.
 
-files=$(find $directory -maxdepth 1 -type f -readable | sort)
+OIFS="$IFS"
+# Here we assume that there is no newline character in the file names.
+IFS=$'\n'
+files="$(find $1 -maxdepth 1 -type f -readable -printf "%f\n" | sort)"
 for file1 in $files; do
   for file2 in $files; do
-    cmp -s $file1 $file2&&ln -f $file1 $file2 &> /dev/null
+    cmp -s "$file1" "$file2"&&ln -f "$file1" "$file2" &> /dev/null
   done
 done
+IFS="$OIFS"
 
