@@ -1,0 +1,70 @@
+1. Use 
+wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+to download the desired version of coreutils to my seas server.
+
+2. Use
+tar –xzvf coreutils-7.6.tar.gz
+to unzip the file.
+
+3. Use
+mkdir coreutils
+to make a directory for the installment of the downloaded coreutils.
+
+4. Get into the unzipped coreutils-7.6 and read the INSTALL file as required.
+
+5. Get the full directory path of the coreutils directory and use it as the
+prefix for configure.
+
+6. Type
+./configure --prefix=/u/eng/class/classtzh/CS35L/assign3/coreutils
+to properly configure the make.
+
+7. Type
+make
+to build the files.
+
+8. Type
+make install
+to install the package.
+
+9. Enter the bin directory of coreutils and attempt to reproduce the bug with
+ls -l
+
+10. The date of the files is incorrectly displayed with format similar to
+2009-03-02 06:22
+Bug successfully reproduced.
+
+11. Go to the archived workaround published in GNU website in 
+http://lists.gnu.org/archive/html/bug-coreutils/2009-09/msg00410.html
+and copy & paste the patch into local file patch.diff.
+
+12. Modified the path names on the top of the patch.diff so that it displays:
+./ls.c
+for both +++ and ---.
+
+13. Move patch.diff to coreutils-7.6/src/ and execute
+patch -p0 < patch.diff
+to apply the patch. The standard Output shows that the patch is successfully
+applied.
+
+14. Stay in coreutils-7.6/src/ and run 
+./ls -l
+We observe that now the date is correctly displayed.
+
+Q1:
+Brady's patch remove the line "case_long_iso_time_style:" because there was a 
+goto statement that goes to that line and has the date displayed with the 
+incorrect date format specified below that line.
+
+It is not necessary from a purely functional point of view, because even if we
+leave it unchanged, the second part will remove the only goto statement to
+that label. However, from a code maintainance point of view, it is necessary
+because unused code should not be kept in the code base.
+
+Q2:
+I do not think that it will cause troubles in non-English speaking countries 
+as it still uses the data format set by the LC_TIME variable, which will
+be correctly adjusted based on the language of the user.
+
+The general thing to watch out is whether there will be further dependence on
+the modified code.
