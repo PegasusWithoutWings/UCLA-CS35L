@@ -68,3 +68,33 @@ be correctly adjusted based on the language of the user.
 
 The general thing to watch out is whether there will be further dependence on
 the modified code.
+
+Q3:
+The program crash when run on an empty file like /dev/null. The reason can be
+seen below in the error message returned by running it on /dev/null:
+
+  File ndline.py", line 70, in <module>
+    main()
+  File "randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/local/cs/Python-2.7.9/lib/python2.7/random.py", line 275, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+
+It is easy to see that the exception occurred when running random.choice on 
+self.lines.
+
+By reading the Python's documentation on random.choice, it says that
+	random.choice(seq)
+	Return a random element from the non-empty sequence seq. If seq is empty, raises IndexError.
+
+We can see in the line 30 that
+	self.lines = f.readlines()
+where
+        f = open(filename, 'r')
+So self.lines will be empty when the program is run on an empy file.
+Therefore, it is understandable that the program will crash when running on an empty file.
+
+Q4:
+
