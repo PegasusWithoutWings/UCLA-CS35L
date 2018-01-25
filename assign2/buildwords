@@ -14,4 +14,4 @@ egrep [pk\'mnwlhaeiou] | \
 # Use ASCII apostrophe (') to represent the Hawaiian ‘okina (‘)
 tr "A-Z\`" "a-z'" | \
 # Sort the resulting list of words, removing any duplicates
-sort -u
+LC_ALL=C sort -u
