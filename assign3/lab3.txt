@@ -81,6 +81,7 @@ seen below in the error message returned by running it on /dev/null:
     return random.choice(self.lines)
   File "/usr/local/cs/Python-2.7.9/lib/python2.7/random.py", line 275, in choice
     return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+IndexError: list index out of range
 
 It is easy to see that the exception occurred when running random.choice on 
 self.lines.
@@ -97,4 +98,15 @@ So self.lines will be empty when the program is run on an empy file.
 Therefore, it is understandable that the program will crash when running on an empty file.
 
 Q4:
+When running the file with Python 3 interpreter with command
+	python3 randline.py
+the system prints
 
+  File "randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+It is noted that Python 3 is not back-compatible with Python 2. So it might be 
+the case that the code is written for Python2 and certain syntax is not
+supported in Python 3.
