@@ -44,7 +44,7 @@ Output randomly selected lines from FILE."""
     parser.add_option("-n", "--numlines",
                       action="store", dest="numlines", default=1,
                       help="output NUMLINES lines (default 1)")
-    options, args = parser.parse_args(sys.argv[1:])
+    options, args = parser.parse_args()
 
     try:
         numlines = int(options.numlines)
