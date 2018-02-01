@@ -62,9 +62,9 @@ def main():
         generator = randline(args.file_name)
         for index in range(5):
             sys.stdout.write(generator.chooseline())
-    except IOError as (errno, strerror):
+    except IOError as error:
         parser.error("I/O error({0}): {1}".
-                     format(errno, strerror))
+                     format(error.errno, error.strerror))
 
 if __name__ == "__main__":
     main()
