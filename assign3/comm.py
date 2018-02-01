@@ -60,7 +60,7 @@ def main():
 
     try:
         generator = randline(args.file_name)
-        for index in range(args.numlines):
+        for index in range(5):
             sys.stdout.write(generator.chooseline())
     except IOError as (errno, strerror):
         parser.error("I/O error({0}): {1}".
