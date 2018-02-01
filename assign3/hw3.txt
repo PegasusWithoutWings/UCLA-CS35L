@@ -1,0 +1,84 @@
+Q1:
+Brady's patch remove the line "case_long_iso_time_style:" because there was a 
+goto statement that goes to that line and has the date displayed with the 
+incorrect date format specified below that line.
+
+It is not necessary from a purely functional point of view, because even if we
+leave it unchanged, the second part will remove the only goto statement to
+that label. However, from a code maintainance point of view, it is necessary
+because unused code should not be kept in the code base.
+
+Q2:
+I do not think that it will cause troubles in non-English speaking countries 
+as it still uses the data format set by the LC_TIME variable, which will
+be correctly adjusted based on the language of the user.
+
+The general thing to watch out is whether there will be further dependence on
+the modified code.
+
+Q3:
+The program crash when run on an empty file like /dev/null. The reason can be
+seen below in the error message returned by running it on /dev/null:
+
+  File ndline.py", line 70, in <module>
+    main()
+  File "randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/local/cs/Python-2.7.9/lib/python2.7/random.py", line 275, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+IndexError: list index out of range
+
+It is easy to see that the exception occurred when running random.choice on 
+self.lines.
+
+By reading the Python's documentation on random.choice, it says that
+	random.choice(seq)
+	Return a random element from the non-empty sequence seq. If seq is empty, raises IndexError.
+
+We can see in the line 30 that
+	self.lines = f.readlines()
+where
+        f = open(filename, 'r')
+So self.lines will be empty when the program is run on an empy file.
+Therefore, it is understandable that the program will crash when running on an empty file.
+
+Q4:
+When running the file with Python 3 interpreter with command
+	python3 randline.py
+the system prints
+
+  File "randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+After searching online, I found in PEP 3110--Catching Exception in Python 3000,
+(URL: https://www.python.org/dev/peps/pep-3110/), that:
+
+As specified in PEP 352 [1], the ability to treat exceptions as tuples will be 
+removed, meaning this code will no longer work
+
+except os.error, (errno, errstr):
+
+Because the automatic unpacking will no longer be possible, it is desirable to 
+remove the ability to use tuples as except targets.
+It is noted that Python 3 is not back-compatible with Python 2. So it might be 
+the case that the code is written for Python2 and certain syntax is not
+supported in Python 3.
+
+The new recommended syntax will be:
+
+try:
+    try_body
+except E as N:
+    except_body
+
+In except_body, we can access the specific element of the exception needed
+through the fields of N. For our case, we can rewrite it as
+
+except IOError as error:
+    parser.error("I/O error({0}): {1}".
+             format(error.errno, error.strerror))
+
