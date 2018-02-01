@@ -41,13 +41,8 @@ def non_negative_integer(string):
 
 def main():
     parser = argparse.ArgumentParser(prog='comm',
-        usage='%(prog)s [-123u] file1 file2',
         description='Select or reject lines common to two files')
 
-    parser.add_argument("-n", "--numlines",
-        type=non_negative_integer,
-        default=1,
-        help="output NUMLINES lines (default 1)")
     parser.add_argument("-1", action='store_false', dest='output_unique_file1',
         default=True, 
         help="Suppress the output column of lines unique to file1.")
@@ -58,7 +53,8 @@ def main():
         default=True, 
         help="Suppress the output column of lines duplicated in file1 and file2.")
     parser.add_argument("-u", "--unsorted",
-        action='store_true', default=False)
+        action='store_true', default=False,
+        help="Sort the two files if they are unsorted.")
     parser.add_argument("file_name")
     args = parser.parse_args()
 
