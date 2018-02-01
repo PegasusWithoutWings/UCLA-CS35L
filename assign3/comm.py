@@ -21,8 +21,7 @@ Please see <http://www.gnu.org/licenses/> for a copy of the license.
 $Id: randline.py,v 1.4 2010/04/05 20:04:43 eggert Exp $
 """
 
-import random, sys
-from optparse import OptionParser
+import random, sys, locale, argparse
 
 class randline:
     def __init__(self, filename):
@@ -33,34 +32,39 @@ class randline:
     def chooseline(self):
         return random.choice(self.lines)
 
+def non_negative_integer(string):
+    value = int(string)
+    if value < 0:
+        msg = "Invalid NUMLINES: {0}.".format(string)
+        raise argparse.ArgumentTypeError(msg)
+    return value
+
 def main():
-    version_msg = "%prog 2.0"
-    usage_msg = """%prog [OPTION]... FILE
+    parser = argparse.ArgumentParser(prog='comm',
+        usage='%(prog)s [-123u] file1 file2',
+        description='Select or reject lines common to two files')
 
-Output randomly selected lines from FILE."""
-
-    parser = OptionParser(version=version_msg,
-                          usage=usage_msg)
-    parser.add_option("-n", "--numlines",
-                      action="store", dest="numlines", default=1,
-                      help="output NUMLINES lines (default 1)")
-    options, args = parser.parse_args()
-
-    try:
-        numlines = int(options.numlines)
-    except:
-        parser.error("invalid NUMLINES: {0}".
-                     format(options.numlines))
-    if numlines < 0:
-        parser.error("negative count: {0}".
-                     format(numlines))
-    if len(args) != 1:
-        parser.error("wrong number of operands")
-    input_file = args[0]
+    parser.add_argument("-n", "--numlines",
+        type=non_negative_integer,
+        default=1,
+        help="output NUMLINES lines (default 1)")
+    parser.add_argument("-1", action='store_false', dest='output_unique_file1',
+        default=True, 
+        help="Suppress the output column of lines unique to file1.")
+    parser.add_argument("-2", action='store_false', dest='output_unique_file2',
+        default=True, 
+        help="Suppress the output column of lines unique to file2.")
+    parser.add_argument("-3", action='store_false', dest='output_duplicate',
+        default=True, 
+        help="Suppress the output column of lines duplicated in file1 and file2.")
+    parser.add_argument("-u", "--unsorted",
+        action='store_true', default=False)
+    parser.add_argument("file_name")
+    args = parser.parse_args()
 
     try:
-        generator = randline(input_file)
-        for index in range(numlines):
+        generator = randline(args.file_name)
+        for index in range(args.numlines):
             sys.stdout.write(generator.chooseline())
     except IOError as (errno, strerror):
         parser.error("I/O error({0}): {1}".
