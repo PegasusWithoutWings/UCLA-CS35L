@@ -17,7 +17,8 @@ prefix for configure.
 
 6. Type
 ./configure --prefix=/u/eng/class/classtzh/CS35L/assign3/coreutils
-to properly configure the make.
+to properly configure the make so the package will be installed in the desired
+directory, coreutils, instead of the directory containing the source code.
 
 7. Type
 make
@@ -28,7 +29,7 @@ make install
 to install the package.
 
 9. Enter the bin directory of coreutils and attempt to reproduce the bug with
-ls -l
+./ls -l
 
 10. The date of the files is incorrectly displayed with format similar to
 2009-03-02 06:22
@@ -50,3 +51,24 @@ applied.
 14. Stay in coreutils-7.6/src/ and run 
 ./ls -l
 We observe that now the date is correctly displayed.
+
+15. Use 
+touch newfile
+to create a new file.
+
+16. Use 
+touch --date="2016-01-01" oldfile
+to create a file that is at least one year old.
+
+17. Change directory into assign3 folder that contains both coreutils and
+coreutils-7.6, and execute the buggy version of ls on both newfile and oldfile,
+we get
+./coreutils/bin/ls -l newfile oldfile
+we get
+-rw-r--r-- 1 classtzh class 0 2018-02-01 16:05 newfile
+-rw-r--r-- 1 classtzh class 0 2016-01-01 00:00 oldfile
+
+18. Then we execute the patched version on the same two files again, and get
+-rw-r--r-- 1 classtzh class 0 Feb  1 16:05 newfile
+-rw-r--r-- 1 classtzh class 0 Jan  1  2016 oldfile
+as desired.
