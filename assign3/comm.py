@@ -40,9 +40,10 @@ def non_negative_integer(string):
     return value
 
 def main():
+    # Initialize the argument parser; add appropriate attributes to it
     parser = argparse.ArgumentParser(prog='comm',
         description='Select or reject lines common to two files')
-
+    # Add required arguments to the parser
     parser.add_argument("-1", action='store_false', dest='output_unique_file1',
         default=True, 
         help="Suppress the output column of lines unique to file1.")
@@ -55,8 +56,14 @@ def main():
     parser.add_argument("-u", "--unsorted",
         action='store_true', default=False,
         help="Sort the two files if they are unsorted.")
-    parser.add_argument("file_name")
+    parser.add_argument("file1", type=argparse.FileType('r'))
+    parser.add_argument("file2", type=argparse.FileType('r'))
     args = parser.parse_args()
+
+    # When -u option is provided, sort the two files first
+    if args.unsorted:
+        args.file1 = sorted(args.file1)
+        args.file2 = sorted(args.file2)
 
     try:
         generator = randline(args.file_name)
