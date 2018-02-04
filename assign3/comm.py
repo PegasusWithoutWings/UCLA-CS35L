@@ -21,23 +21,16 @@ Please see <http://www.gnu.org/licenses/> for a copy of the license.
 $Id: randline.py,v 1.4 2010/04/05 20:04:43 eggert Exp $
 """
 
-import random, sys, locale, argparse
+import random, sys, argparse
 
-class randline:
-    def __init__(self, filename):
-        f = open(filename, 'r')
-        self.lines = f.readlines()
-        f.close()
-
-    def chooseline(self):
-        return random.choice(self.lines)
-
-def non_negative_integer(string):
-    value = int(string)
-    if value < 0:
-        msg = "Invalid NUMLINES: {0}.".format(string)
-        raise argparse.ArgumentTypeError(msg)
-    return value
+def writeline(args, line, writeType):
+    if (writeType == 1) and args.output_unique_file1:
+        print(line)
+    if (writeType == 2) and args.output_unique_file2:
+        print('\t{0}'.format(line))
+    if (writeType == 3) and args.output_duplicate:
+        print('\t\t{0}'.format(line))
+    return
 
 def main():
     # Initialize the argument parser; add appropriate attributes to it
@@ -60,6 +53,7 @@ def main():
     parser.add_argument("file2", type=argparse.FileType('r'))
     args = parser.parse_args()
 
+    # When -u option is not provided, assume that the two files are sorted
     # When -u option is provided, sort the two files first
     if args.unsorted:
         args.file1 = sorted(args.file1)
