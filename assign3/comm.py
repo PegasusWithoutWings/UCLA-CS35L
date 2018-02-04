@@ -25,12 +25,31 @@ import random, sys, argparse
 
 def writeline(args, line, writeType):
     if (writeType == 1) and args.output_unique_file1:
-        print(line)
-    if (writeType == 2) and args.output_unique_file2:
-        print('\t{0}'.format(line))
-    if (writeType == 3) and args.output_duplicate:
-        print('\t\t{0}'.format(line))
-    return
+        sys.stdout.write(line)
+    elif (writeType == 2) and args.output_unique_file2:
+        sys.stdout.write('\t{0}'.format(line))
+    elif (writeType == 3) and args.output_duplicate:
+        sys.stdout.write('\t\t{0}'.format(line))
+
+def compare_files(args):
+    i, j = 0, 0
+    while (i < len(args.file1)) and (j < len(args.file2)):
+        if args.file1[i] < args.file2[j]:
+            writeline(args, args.file1[i], 1)
+            i += 1
+        elif args.file1[i] == args.file2[j]:
+            writeline(args, args.file1[i], 3)
+            i += 1
+            j += 1
+        else:
+            writeline(args, args.file2[j], 2)
+            j += 1
+    if i == len(args.file1):
+        for line in args.file2[j:]:
+            writeline(args, line, 2)
+    if j == len(args.file2):
+        for line in args.file1[i:]:
+            writeline(args, line, 1)
 
 def main():
     # Initialize the argument parser; add appropriate attributes to it
@@ -58,14 +77,11 @@ def main():
     if args.unsorted:
         args.file1 = sorted(args.file1)
         args.file2 = sorted(args.file2)
+    args.file1 = list(args.file1)
+    args.file2 = list(args.file2)
 
-    try:
-        generator = randline(args.file_name)
-        for index in range(5):
-            sys.stdout.write(generator.chooseline())
-    except IOError as error:
-        parser.error("I/O error({0}): {1}".
-                     format(error.errno, error.strerror))
+    # Start comparing files and write to stdout according to set options
+    compare_files(args)
 
 if __name__ == "__main__":
     main()
