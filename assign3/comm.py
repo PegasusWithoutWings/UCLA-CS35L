@@ -21,7 +21,7 @@ Please see <http://www.gnu.org/licenses/> for a copy of the license.
 $Id: randline.py,v 1.4 2010/04/05 20:04:43 eggert Exp $
 """
 
-import random, sys, argparse
+import sys, argparse
 
 def writeline(args, line, writeType):
     if (writeType == 1) and args.output_unique_file1:
@@ -30,6 +30,8 @@ def writeline(args, line, writeType):
         sys.stdout.write('\t{0}'.format(line))
     elif (writeType == 3) and args.output_duplicate:
         sys.stdout.write('\t\t{0}'.format(line))
+    else:
+        raise TypeError("{} is not a valid writeline option.".format(writeType))
 
 def compare_files(args):
     i, j = 0, 0
@@ -44,13 +46,11 @@ def compare_files(args):
         else:
             writeline(args, args.file2[j], 2)
             j += 1
-    if i == len(args.file1):
-        for line in args.file2[j:]:
-            writeline(args, line, 2)
-    if j == len(args.file2):
-        for line in args.file1[i:]:
-            writeline(args, line, 1)
-
+    for line in args.file1[i:]:
+        writeline(args, line, 1)
+    for line in args.file2[j:]:
+        writeline(args, line, 2)
+ 
 def main():
     # Initialize the argument parser; add appropriate attributes to it
     parser = argparse.ArgumentParser(prog='comm',
