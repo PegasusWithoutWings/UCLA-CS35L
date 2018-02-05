@@ -30,8 +30,6 @@ def writeline(args, line, writeType):
         sys.stdout.write('\t{0}'.format(line))
     elif (writeType == 3) and args.output_duplicate:
         sys.stdout.write('\t\t{0}'.format(line))
-    else:
-        raise TypeError("{} is not a valid writeline option.".format(writeType))
 
 def compare_files(args):
     i, j = 0, 0
