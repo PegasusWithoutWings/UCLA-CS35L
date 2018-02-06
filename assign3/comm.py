@@ -35,15 +35,12 @@ def compare_files(args):
     # When -u option is not provided, assume that the two files are sorted
     while (args.file1 != []) and (args.file2 != []):
         if args.file1[0] < args.file2[0]:
-            writeline(args, args.file1[0], 1)
-            args.file1 = args.file1[1:]
+            writeline(args, args.file1.pop(0), 1)
         elif args.file1[0] == args.file2[0]:
-            writeline(args, args.file1[0], 3)
-            args.file1 = args.file1[1:]
-            args.file2 = args.file2[1:]
+            writeline(args, args.file1.pop(0), 3)
+            args.file2.pop(0)
         else:
-            writeline(args, args.file2[0], 2)
-            args.file2 = args.file2[1:]
+            writeline(args, args.file2.pop(0), 2)
     for line in args.file1:
         writeline(args, line, 1)
     for line in args.file2:
