@@ -32,23 +32,67 @@ def writeline(args, line, writeType):
         sys.stdout.write('\t\t{0}'.format(line))
 
 def compare_files(args):
-    i, j = 0, 0
-    while (i < len(args.file1)) and (j < len(args.file2)):
-        if args.file1[i] < args.file2[j]:
-            writeline(args, args.file1[i], 1)
-            i += 1
-        elif args.file1[i] == args.file2[j]:
-            writeline(args, args.file1[i], 3)
-            i += 1
-            j += 1
+    # When -u option is not provided, assume that the two files are sorted
+    while (args.file1 != []) and (args.file2 != []):
+        if args.file1[0] < args.file2[0]:
+            writeline(args, args.file1[0], 1)
+            args.file1 = args.file1[1:]
+        elif args.file1[0] == args.file2[0]:
+            writeline(args, args.file1[0], 3)
+            args.file1 = args.file1[1:]
+            args.file2 = args.file2[1:]
         else:
-            writeline(args, args.file2[j], 2)
-            j += 1
-    for line in args.file1[i:]:
+            writeline(args, args.file2[0], 2)
+            args.file2 = args.file2[1:]
+    for line in args.file1:
         writeline(args, line, 1)
-    for line in args.file2[j:]:
+    for line in args.file2:
         writeline(args, line, 2)
- 
+
+def compare_files_unsorted(args):
+    args.file1 = list(args.file1)
+    args.file2 = list(args.file2) 
+    printQueueMap1 = {line : [] for line in args.file1}
+    printQueueMap2 = {line : [] for line in args.file2}
+    sortedFile1 = sorted(args.file1)
+    sortedFile2 = sorted(args.file2)
+        
+    while (sortedFile1 != []) and (sortedFile2 != []):
+        file1_line = sortedFile1[0]
+        file2_line = sortedFile2[0]
+        if file1_line < file2_line:
+            printQueueMap1[file1_line].append(1)
+            sortedFile1 = sortedFile1[1:]
+        elif file1_line == file2_line:
+            printQueueMap1[file1_line].append(3)
+            printQueueMap2[file2_line].append(None)
+            sortedFile1 = sortedFile1[1:]
+            sortedFile2 = sortedFile2[1:]
+        else:
+            printQueueMap2[file2_line].append(2)
+            sortedFile2 = sortedFile2[1:]
+    for line in sortedFile1:
+        printQueueMap1[line].append(1)
+    for line in sortedFile2:
+        printQueueMap2[line].append(2)
+
+    # Print out lines according to the order of the original files
+    for line in args.file1:
+        printQueue = printQueueMap1[line]
+        printType = printQueue[0]
+        if (printType == 1) and args.output_unique_file1:
+            writeline(args, line, 1)
+        if (printType == 3) and args.output_duplicate:
+            writeline(args, line, 3)
+        printQueue = printQueue[1:]
+
+    for line in args.file2:
+        printQueue = printQueueMap2[line]
+        printType = printQueue[0]
+        if (printType == 2) and args.output_unique_file2:
+            writeline(args, line, 2)
+        printQueue = printQueue[1:]
+
 def main():
     # Initialize the argument parser; add appropriate attributes to it
     parser = argparse.ArgumentParser(prog='comm',
@@ -70,16 +114,14 @@ def main():
     parser.add_argument("file2", type=argparse.FileType('r'))
     args = parser.parse_args()
 
-    # When -u option is not provided, assume that the two files are sorted
-    # When -u option is provided, sort the two files first
-    if args.unsorted:
-        args.file1 = sorted(args.file1)
-        args.file2 = sorted(args.file2)
     args.file1 = list(args.file1)
     args.file2 = list(args.file2)
 
     # Start comparing files and write to stdout according to set options
-    compare_files(args)
+    if args.unsorted:
+        compare_files_unsorted(args)
+    else:
+        compare_files(args)
 
 if __name__ == "__main__":
     main()
