@@ -57,4 +57,34 @@
 
 1. While remaining in the temporary directory, we run debugger `gdb ~/CS35L/assign4/coreutils-with-bug/src/ls` to locate the code that caused this bug.
 
-1. As a trial, I executed `run -lt now now1 wwi-armistice` as a attempt to mimic what we did in bash. It produced the same as running the program in shell.
+1. As a trial, I executed `run -lt now now1 wwi-armistice` as a attempt to mimic what we did in bash. It produced the same output as running the program in shell, in addition to some gdb specific message.
+
+1. Executed `layout src` to view the C source code of the buggy `ls`.
+
+1. Set a breakpoint at main with `break main`.
+
+1. Execute `run -lt now now1 wwi-armistice` and use `nexti` to step through functions, looking for things that can impact file ordering.
+
+1. Found a function `sort_files` called during execution. Set a breakpoint at this function with `break sort_files` and rerun the program with the same arguments.
+
+1. After stepping through some codes, the 2975th line of code the program ran onto, as seen below, raised my interest.
+    ```C
+    func = sort_reverse ? rev_cmp_mtime : compare_mtime;
+    ```
+    The bug is essentially the wrong sorting of time. So looking at the comparator function should help.
+
+1. With above reasoning, I set another breakpoint at `compare_mtime` with `break compare_mtime` and then run `continue` to have the program continue running until `compare_mtime` is called.
+
+1. After running for a very short period of time, the program stopped at line 2884 of `ls.c`, which is
+    ```C
+    static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+    ```
+    So the true function definition should be in the function `cmp_mtime`.
+
+1. Then I use `step` trying to step into `cmp_mtime`. To my great confusion, I was led to a function in `timespec.h` called `timespec_cmp`. 
+
+1. I did not understand what is going on because first I was not led to the definition of the function `cmp_mtime`, and second, `timespec_cmp` has only two arguments while `cmp_mtime` is called with three arguments.
+
+1. Not knowing what to do, I continued to step through the program execution with `step`. To be even more frustrated, I find that then a few functions from `/lib64/libc.so.6` are called, whose source I cannot even see.
+
+1. The rest of the execution is mostly just printing out the result with little insight to gain.
