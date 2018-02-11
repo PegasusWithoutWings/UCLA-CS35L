@@ -45,8 +45,12 @@ struct timespec
 static inline int
 timespec_cmp (struct timespec a, struct timespec b)
 {
-  int diff = a.tv_sec - b.tv_sec;
-  return diff ? diff : a.tv_nsec - b.tv_nsec;
+  if (a.tv_sec < b.tv_sec):
+      return -1;
+  else if (a.tv_sec > b.tv_sec):
+      return 1;
+  else:
+      return (a.tv_nsec - b.tv_nsec);
 }
 
 # if ! HAVE_DECL_NANOSLEEP
