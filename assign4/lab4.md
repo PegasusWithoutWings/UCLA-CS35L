@@ -145,21 +145,24 @@
     ```diff
     --- coreutils-with-bug/lib/timespec.h
     +++ coreutils-with-bug/lib/timespec.h
-    @@ -45,8 +45,12 @@ struct timespec
-    static inline int
-    timespec_cmp (struct timespec a, struct timespec b)
-    {
+    @@ -45,8 +45,15 @@ struct timespec
+     static inline int
+     timespec_cmp (struct timespec a, struct timespec b)
+     {
     -  int diff = a.tv_sec - b.tv_sec;
     -  return diff ? diff : a.tv_nsec - b.tv_nsec;
-    +  if (a.tv_sec < b.tv_sec):
+    +  if (a.tv_sec < b.tv_sec) {
     +      return -1;
-    +  else if (a.tv_sec > b.tv_sec):
+    +  }
+    +  else if (a.tv_sec > b.tv_sec) {
     +      return 1;
-    +  else:
+    +  }
+    +  else {
     +      return (a.tv_nsec - b.tv_nsec);
+    +  }
     }
-    
-    # if ! HAVE_DECL_NANOSLEEP
+ 
+     # if ! HAVE_DECL_NANOSLEEP
     ```
 
 1. We tested applying the batch by first reverting the change with `git checkout lib\timespec.h` and then apply the patch with `cat lab4.diff | patch -p0`. The patch is successfully applied.
