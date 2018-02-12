@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>lab4</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////Users/georgezhang/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.3.2/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <h1 class="mume-header" id="cs35l-lab-4-debugging-a-c-program">CS35L-Lab 4: Debugging a C program</h1>
+
+<h2 class="mume-header" id="reproduce-the-bug">Reproduce the bug</h2>
+
+<ol>
+<li>
+<p>Dowloaded the <a href="https://web.cs.ucla.edu/classes/winter18/cs35L/assign/coreutils-with-bug.tar.gz">coreutils-with-bug</a> and unzipping it in SEASNET server according to the instruction.</p>
+</li>
+<li>
+<p>Ran</p>
+<pre class="language-s">./configure
+</pre>
+<p>in the <code>coreutils-with-bug</code> directory.</p>
+</li>
+<li>
+<p>Exectuted <code>make</code> as usual but failed. The error message shows that <code>utimens.h:2:5: error: conflicting types for 'futimens'</code>.</p>
+</li>
+<li>
+<p>Downloaded the patch file <a href="https://web.cs.ucla.edu/classes/winter18/cs35L/assign/coreutils.diff">coreutils.diff</a> from the assignment website to <code>coreutils-with-bug</code> folder. After inspection, I found that</p>
+<pre class="language-C"><span class="token operator">-</span><span class="token function">futimens</span> <span class="token punctuation">(</span><span class="token keyword">int</span> fd ATTRIBUTE_UNUSED<span class="token punctuation">,</span>
+<span class="token operator">+</span><span class="token function">coreutils_futimens</span> <span class="token punctuation">(</span><span class="token keyword">int</span> fd ATTRIBUTE_UNUSED<span class="token punctuation">,</span>
+</pre>
+<p>This will remove one definition of <code>futimes</code> and should fix the problem caused by multiple type definitions.</p>
+</li>
+<li>
+<p>After understanding the mechanism of the patch file, I executed</p>
+<pre class="language-bash"><span class="token function">cat</span> coreutils.diff <span class="token operator">|</span> patch -p0
+</pre>
+<p>in <code>coreutils-with-bug</code> directory. The patch was applied successfully.</p>
+</li>
+<li>
+<p>Run <code>./configure</code> again with the same prefix.</p>
+</li>
+<li>
+<p>Run <code>make</code> again and completed the build this time.</p>
+</li>
+<li>
+<p>Attempt to reproduce the bug. First run</p>
+<pre class="language-bash">tmp<span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>mktemp -d<span class="token variable">)</span></span>
+<span class="token function">cd</span> <span class="token variable">$tmp</span>
+<span class="token function">touch</span> -d <span class="token string">'1918-11-11 11:00 GMT'</span> wwi-armistice
+<span class="token function">touch</span> now
+<span class="token function">sleep</span> 1
+<span class="token function">touch</span> now1
+</pre>
+</li>
+<li>
+<p>Run <code>~/CS35L/assign4/coreutils-with-bug/src/ls -lt</code> in the newly created temporary folder, and it shows</p>
+<pre class="language-bash">-rw-r--r-- 1 classtzh class 0 1918-11-11 03:00 wwi-armistice
+-rw-r--r-- 1 classtzh class 0 2018-02-10 15:23 now1
+-rw-r--r-- 1 classtzh class 0 2018-02-10 15:23 now
+</pre>
+<p>The oldest file should appear at the bottom but appeared in the top. Bug successfully reproduced.</p>
+</li>
+</ol>
+<h2 class="mume-header" id="locate-the-cause-of-the-bug">Locate the cause of the bug</h2>
+
+<ol>
+<li>
+<p>While remaining in the temporary directory, we run debugger <code>gdb ~/CS35L/assign4/coreutils-with-bug/src/ls</code> to locate the code that caused this bug.</p>
+</li>
+<li>
+<p>As a trial, I executed <code>run -lt</code> as a attempt to mimic what we did in bash. It produced the same output as running the program in shell, in addition to some gdb specific message.</p>
+</li>
+<li>
+<p>Executed <code>layout src</code> to view the C source code of the buggy <code>ls</code>.</p>
+</li>
+<li>
+<p>Set a breakpoint at main with <code>break main</code>.</p>
+</li>
+<li>
+<p>Execute <code>run -lt</code> and use <code>nexti</code> to step through functions, looking for things that can impact file ordering.</p>
+</li>
+<li>
+<p>Found a function <code>sort_files</code> called during execution. Set a breakpoint at this function with <code>break sort_files</code>. Clear the break point at <code>main</code> with <code>clear main</code> and run the program with the same arguments.</p>
+</li>
+<li>
+<p>After stepping through some codes, the 2975th line of code the program ran onto, as seen below, raised my interest.</p>
+<pre class="language-C">func <span class="token operator">=</span> sort_reverse <span class="token operator">?</span> rev_cmp_mtime <span class="token punctuation">:</span> compare_mtime<span class="token punctuation">;</span>
+</pre>
+<p>The order of sorting is determined by the comparator function. If the sorting order is wrong, that means the comparator is wrong. Therefore, I decided to look into the comparator function.</p>
+</li>
+<li>
+<p>With above reasoning, I set another breakpoint at <code>compare_mtime</code> with <code>break compare_mtime</code> and then run <code>continue</code> to have the program continue running until <code>compare_mtime</code> is called.</p>
+</li>
+<li>
+<p>After running for a very short period of time, the program stopped at line 2884 of <code>ls.c</code>, which is</p>
+<pre class="language-C"><span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">compare_mtime</span> <span class="token punctuation">(</span>V a<span class="token punctuation">,</span> V b<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token function">cmp_mtime</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> xstrcoll<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+</pre>
+<p>So the true function definition should be in the function <code>cmp_mtime</code>.</p>
+</li>
+<li>
+<p>Set a break point at <code>cmp_mtime</code> with <code>break cmp_mtime</code> and then rerun the program.</p>
+</li>
+<li>
+<p>I use <code>step</code> trying to step into <code>cmp_mtime</code>. It then called <code>timespec_cmp</code>.</p>
+</li>
+<li>
+<p>I decided to rerun the program and this time focus specifically on the return values of  <code>cmp_mtime</code>. For this purpose, I only set <code>break cmp_mtime</code>.</p>
+</li>
+<li>
+<p>I stepped through the in total 3 executions of <code>cmp_mtime</code> functions and printed out the return value with <code>print /d $rax</code> each time after the function call. The values are:</p>
+<pre class="language-C"><span class="token number">1162836302</span>
+<span class="token number">1162836301</span>
+<span class="token number">4294967295</span>
+</pre>
+</li>
+<li>
+<p>Based on the name of the function, it is easy to infer that these numbers are simply the difference of the modified time, in the format of &quot;seconds since epoch&quot; of the three files.</p>
+</li>
+<li>
+<p>To provide further evidence, I printed out the modified time of the free files in the &quot;seconds since epoch&quot; format in shell with command</p>
+<pre class="language-bash"><span class="token function">find</span> <span class="token keyword">.</span> -type f -exec <span class="token function">stat</span> --printf<span class="token operator">=</span><span class="token string">"%n %Y\n"</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>`
+</pre>
+<p>The result is:</p>
+<pre class="language-txt">./now1 1518304995
+./now 1518304994
+./wwi-armistice -1613826000
+</pre>
+</li>
+<li>
+<p>With a few attempts, we find that</p>
+<pre class="language-txt">-1613826000 - 1518304995 = 1162836301
+-1613826000 - 1518304994 = 1162836302
+</pre>
+<p>Clearly the mtime is stored with 32-bit integer type, and there are overflows when taking the difference in <code>cmp_mtime</code>.</p>
+</li>
+<li>
+<p>The property of the comparator function is such that, if <code>cmp(a, b) &gt; 0</code> then <code>a &gt; b</code>, which in the context of sorting time means a is created after b. Because <code>cmp_mtime(-1613826000, 1518304994) &gt; 0</code>, the sorting algorithm will treat <code>wwi-armistice</code> as if it is created after <code>now</code> and, similarly, after <code>now1</code>.</p>
+</li>
+<li>
+<p>To avoid the integer overflow that caused this problem, we can avoid subtraction and simply return a positive number or negative number based on the result of comparison. A good implementation of <code>timespec_cmp</code> can be</p>
+<pre class="language-C"><span class="token function">timespec_cmp</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> timespec a<span class="token punctuation">,</span> <span class="token keyword">struct</span> timespec b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">.</span>tv_sec <span class="token operator">&lt;</span> b<span class="token punctuation">.</span>tv_sec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">.</span>tv_sec <span class="token operator">></span> b<span class="token punctuation">.</span>tv_sec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>a<span class="token punctuation">.</span>tv_nsec <span class="token operator">-</span> b<span class="token punctuation">.</span>tv_nsec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</pre>
+</li>
+</ol>
+<h2 class="mume-header" id="patching">Patching</h2>
+
+<ol>
+<li>
+<p>We are now going to make a patch file to the <code>timespec_cmp</code> function specified in <code>\lib\timespec.h</code>. Here we are going to use the ability of <code>git diff</code> to compare changed file with last commit to generate the needed patch file with right file path.</p>
+</li>
+<li>
+<p>First we add the <code>\lib\timespec.h</code> to the repository with</p>
+<pre class="language-git">git add -f \lib\timespec.h
+git commit -m <span class="token string">"Add timespec.h to the repository"</span>
+</pre>
+</li>
+<li>
+<p>Then we open the file with editor, and make the specified change to it. After the change, to generate the patch file, we will execute</p>
+<pre class="language-git">git diff > lab4.diff
+</pre>
+</li>
+<li>
+<p>Now after returning back to the directory that contains <code>coreutils-with-bug</code>, we will open the patch file and delete some of the unnecessary messages generated by git. The result will be</p>
+<pre class="language-diff"><span class="token coord">--- coreutils-with-bug/lib/timespec.h</span>
+<span class="token coord">+++ coreutils-with-bug/lib/timespec.h</span>
+@@ -45,8 +45,15 @@ struct timespec
+ static inline int
+ timespec_cmp (struct timespec a, struct timespec b)
+ {
+<span class="token deleted">-  int diff = a.tv_sec - b.tv_sec;</span>
+<span class="token deleted">-  return diff ? diff : a.tv_nsec - b.tv_nsec;</span>
+<span class="token inserted">+  if (a.tv_sec &lt; b.tv_sec) {</span>
+<span class="token inserted">+      return -1;</span>
+<span class="token inserted">+  }</span>
+<span class="token inserted">+  else if (a.tv_sec > b.tv_sec) {</span>
+<span class="token inserted">+      return 1;</span>
+<span class="token inserted">+  }</span>
+<span class="token inserted">+  else {</span>
+<span class="token inserted">+      return (a.tv_nsec - b.tv_nsec);</span>
+<span class="token inserted">+  }</span>
+}
+
+ # if ! HAVE_DECL_NANOSLEEP
+</pre>
+</li>
+<li>
+<p>We tested applying the batch by first reverting the change with <code>git checkout lib\timespec.h</code> and then apply the patch with <code>cat lab4.diff | patch -p0</code>. The patch is successfully applied.</p>
+</li>
+</ol>
+<h2 class="mume-header" id="testing-patched-program">Testing patched program</h2>
+
+<ol>
+<li>
+<p>Build the binaries again with <code>make</code>.</p>
+</li>
+<li>
+<p>Since I accidentally quit the server, I need to reproduce the temporary files with the same commands as the 8th step in <em>Reproduce the Bug</em> section.</p>
+</li>
+<li>
+<p>Execute the rebuilt binary of <code>ls</code> again with</p>
+<pre class="language-bash">~/CS35L/assign4/coreutils-with-bug/src/ls -lt
+</pre>
+<p>We get</p>
+<pre class="language-bash">-rw-r--r-- 1 classtzh class 0 2018-02-11 17:04 now1
+-rw-r--r-- 1 classtzh class 0 2018-02-11 17:04 now
+-rw-r--r-- 1 classtzh class 0 1918-11-11 03:00 wwi-armistice
+</pre>
+<p>which is the desired output.</p>
+</li>
+<li>
+<p>We have thus fixed the bug.</p>
+</li>
+</ol>
+<h2 class="mume-header" id="reproduce-problem-in-seasnet-linux-server">Reproduce Problem in SEASnet Linux Server</h2>
+
+<ol>
+<li>
+<p>We will attempt to create similar problem this time in my home directory in SEASnet Linux Server with</p>
+<pre class="language-bash"><span class="token function">touch</span> -d <span class="token string">'1918-11-11 11:00 GMT'</span> wwi-armistice
+<span class="token function">touch</span> now
+<span class="token function">sleep</span> 1
+<span class="token function">touch</span> now1
+TZ<span class="token operator">=</span>UTC0 <span class="token function">ls</span> -lt --full-time wwi-armistice now now1
+</pre>
+</li>
+<li>
+<p>The result printed out is:</p>
+<pre class="language-bash">-rw-r--r-- 1 classtzh class 0 2054-12-17 17:28:16.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 classtzh class 0 2018-02-12 01:10:12.257504000 +0000 now1
+-rw-r--r-- 1 classtzh class 0 2018-02-12 01:10:11.252413000 +0000 now
+</pre>
+<p>which is also wrong.</p>
+</li>
+<li>
+<p>To understand the reason, I checked the file system of my home folder with</p>
+<pre class="language-bash"><span class="token function">df</span> -T <span class="token variable">$HOME</span>
+</pre>
+<p>which prints out</p>
+<pre class="language-txt">Filesystem                              Type 1K-blocks     Used Available Use% Mounted on
+barlock.seas.ucla.edu:/vol/vol5/home.13 nfs  419430400 78193984 341236416  19% /w/home.13
+</pre>
+</li>
+<li>
+<p>It is possible that the NFS file system is of an older version that only supports 32-bit representation. In such case, we do have enough bits to represent the modification time difference of two files created a hundred of years apart, which is <code>4,170,636,000</code>, bigger than the maximum representable signed integer in 32-bit system, which is <code>2,147,483,647</code>.</p>
+</li>
+</ol>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#cs35l-lab-4-debugging-a-c-program">CS35L-Lab 4: Debugging a C program</a>
+<ul>
+<li><a href="#reproduce-the-bug">Reproduce the bug</a></li>
+<li><a href="#locate-the-cause-of-the-bug">Locate the cause of the bug</a></li>
+<li><a href="#patching">Patching</a></li>
+<li><a href="#testing-patched-program">Testing patched program</a></li>
+<li><a href="#reproduce-problem-in-seasnet-linux-server">Reproduce Problem in SEASnet Linux Server</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

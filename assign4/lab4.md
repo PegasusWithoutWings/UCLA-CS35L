@@ -168,3 +168,52 @@
 1. We tested applying the batch by first reverting the change with `git checkout lib\timespec.h` and then apply the patch with `cat lab4.diff | patch -p0`. The patch is successfully applied.
 
 ## Testing patched program
+
+1. Build the binaries again with `make`.
+
+1. Since I accidentally quit the server, I need to reproduce the temporary files with the same commands as the 8th step in *Reproduce the Bug* section.
+
+1. Execute the rebuilt binary of `ls` again with
+    ```bash
+    ~/CS35L/assign4/coreutils-with-bug/src/ls -lt
+    ```
+    We get
+    ```bash
+    -rw-r--r-- 1 classtzh class 0 2018-02-11 17:04 now1
+    -rw-r--r-- 1 classtzh class 0 2018-02-11 17:04 now
+    -rw-r--r-- 1 classtzh class 0 1918-11-11 03:00 wwi-armistice
+    ```
+    which is the desired output.
+
+1. We have thus fixed the bug.
+
+## Reproduce Problem in SEASnet Linux Server
+
+1. We will attempt to create similar problem this time in my home directory in SEASnet Linux Server with
+    ```bash
+    touch -d '1918-11-11 11:00 GMT' wwi-armistice
+    touch now
+    sleep 1
+    touch now1
+    TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+    ```
+
+1. The result printed out is:
+    ```bash
+    -rw-r--r-- 1 classtzh class 0 2054-12-17 17:28:16.000000000 +0000 wwi-armistice
+    -rw-r--r-- 1 classtzh class 0 2018-02-12 01:10:12.257504000 +0000 now1
+    -rw-r--r-- 1 classtzh class 0 2018-02-12 01:10:11.252413000 +0000 now
+    ```
+    which is also wrong.
+
+1. To understand the reason, I checked the file system of my home folder with
+    ```bash
+    df -T $HOME
+    ```
+    which prints out
+    ```txt
+    Filesystem                              Type 1K-blocks     Used Available Use% Mounted on
+    barlock.seas.ucla.edu:/vol/vol5/home.13 nfs  419430400 78193984 341236416  19% /w/home.13
+    ```
+
+1. It is possible that the NFS file system is of an older version that only supports 32-bit representation. In such case, we do have enough bits to represent the modification time difference of two files created a hundred of years apart, which is `4,170,636,000`, bigger than the maximum representable signed integer in 32-bit system, which is `2,147,483,647`.
