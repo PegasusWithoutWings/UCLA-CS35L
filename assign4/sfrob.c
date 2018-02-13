@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-int frobcmp (const char *str1, const char *str2);
-
 int frobcmp (const char *str1, const char *str2) {
   register const unsigned char *s1 = (const unsigned char*)str1;
   register const unsigned char *s2 = (const unsigned char*)str2;
@@ -22,6 +20,10 @@ int frobcmp (const char *str1, const char *str2) {
   }
 }
 
+// This is a wrapper function to use frobcmp in qsort
+int compar (const void *line1, const void *line2) {
+  return frobcmp(*((const char **) line1), *((const char **) line2));
+}
 /*
 This program reads frobnicated text lines from standard input, and writes a 
 sorted version to standard output in frobnicated form.
@@ -96,13 +98,17 @@ int main(void)
       line = inputBuffer + i + 1;
     }
   }
+  free(inputBuffer);
   // ENSURE: lineBuffer is an array of pointer to frobnicated texts
-
   // sort the lineBuffer
-  // qsort();
-
+  qsort(lineBuffer, lineNumber, sizeof(char *), &compar);
   // Output the result of qsort into stdout
-
+  for (int i = 0; i < lineNumber; i++) {
+    for (int j = 0; lineBuffer[i][j] != ' '; j++) {
+      printf("%c", lineBuffer[i][j]);
+    }
+    printf(' ');
+  }
   // Exit the program
   exit(0);
 }
