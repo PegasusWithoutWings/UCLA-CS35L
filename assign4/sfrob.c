@@ -7,14 +7,8 @@ int frobcmp (const char *str1, const char *str2) {
   register const unsigned char *s2 = (const unsigned char*)str2;
 
   for (; *s1 == *s2; s1++, s2++) {
-    if (*s1 == ' ' && *s2 == ' ') {
+    if (*s1 == ' '){
       return 0;
-    }
-    if (*s1 == ' ' && *s2 != ' ') {
-      return -1;
-    }
-    if (*s1 != ' ' && *s2 == ' ') {
-      return 1;
     }
     return ((*s1 ^ 42) < (*s2 ^ 42)) ? -1 : 1;
   }
@@ -40,7 +34,10 @@ int main(void)
   inputBufferSize = 20;
   // The inputBuffer by default can store 20 characters
   inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
-
+  if (inputBuffer == NULL) {
+    fprintf(stderr, "Memory Allocation Error");
+    exit(1);
+  }
   // Reading from the standard input stream and store them into the 
   // inputBuffer, until we reach EOF or reads an error
   while (1) {
@@ -70,6 +67,7 @@ int main(void)
       inputBufferSize *= 2;
       inputBuffer = (char*) realloc(inputBuffer, sizeof(char) *  
                                       inputBufferSize);
+       
       if (inputBuffer == NULL) {
         fprintf(stderr, "Memory Allocation Error");
         exit(1);
@@ -78,28 +76,31 @@ int main(void)
     if (currentChar == ' ') {
       lineNumber++;
     } 
-    else {
-      inputBuffer[inputCount++] = currentChar;
-    }
+    inputBuffer[inputCount++] = currentChar;
   }
 
   // If the input is empty, exit the program
   if (inputCount == 0) {
     exit(0);
   }
+
   // ENSURE: inputBuffer stores all the input and ends with a space 
   // Process the inputBuffer and store each frobnicated text as an element into
   // lineBuffer.
   lineBuffer = (char **) malloc(sizeof(char *) * lineNumber);
+  if (inputBuffer == NULL) {
+    fprintf(stderr, "Memory Allocation Error");
+    exit(1);
+  }
   char *line = inputBuffer;
   for (int i = 0, lineNumber = 0; i < inputCount; i++) {
     if (inputBuffer[i] == ' ') {
-      lineBuffer[lineNumber] = line;
+      lineBuffer[lineNumber++] = line;
       line = inputBuffer + i + 1;
     }
   }
   free(inputBuffer);
-  // ENSURE: lineBuffer is an array of pointer to frobnicated texts
+ // ENSURE: lineBuffer is an array of pointer to frobnicated texts
   // sort the lineBuffer
   qsort(lineBuffer, lineNumber, sizeof(char *), &compar);
   // Output the result of qsort into stdout
