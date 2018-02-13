@@ -109,6 +109,8 @@ int main(void)
     }
     printf(' ');
   }
+
+  free(lineBuffer);
   // Exit the program
   exit(0);
 }
