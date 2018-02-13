@@ -47,9 +47,13 @@ int main(void)
   char *inputBuffer, **lineBuffer;
   int inputCount;
 
+  // The inputBuffer by default can store 20 characters
+  inputBuffer = (char*) malloc(sizeof(char) * 20);
+
   // Reading from the standard input stream and store them into the 
   // inputBuffer, until we reach EOF or reads an error
   while (1) {
+    currentChar = getchar();
     if (feof(stdin)) { // If reached the end of file
       // Make sure that if the file is nonempty, the output ends with a 
       // trailing space
