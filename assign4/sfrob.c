@@ -45,10 +45,12 @@ int main(void)
   // Variable declarations
   char currentChar;
   char *inputBuffer, **lineBuffer;
-  int inputCount;
+  int inputCount, inputBufferSize;
 
+  inputCount = 0;
+  inputBufferSize = 20;
   // The inputBuffer by default can store 20 characters
-  inputBuffer = (char*) malloc(sizeof(char) * 20);
+  inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
 
   // Reading from the standard input stream and store them into the 
   // inputBuffer, until we reach EOF or reads an error
@@ -60,8 +62,7 @@ int main(void)
       if (inputCount > 0) {
         // Check if the last input is a space
         if (inputBuffer[inputCount - 1] != ' ') {
-          inputBuffer[inputCount] = ' ';
-          inputCount++;
+          inputBuffer[inputCount++] = ' ';
         }
       }
       break;
@@ -70,15 +71,35 @@ int main(void)
       fprintf(stderr, "IO Error");
       exit(1);
     }
+    // ENSURE: currentChar is neither end of file nor error
 
-    // ENSURE: stdin is neither end of file nor error
+    // Before we add the new character to the inputBuffer, we need to make sure
+    // that there is still enough memory allocated
+    if (inputCount == inputBufferSize) {
+      // Double the memory allocated
+      inputBufferSize *= 2;
+      inputBuffer = (char*) realloc(inputBuffer, sizeof(char) *  
+                                      inputBufferSize);
+      if (inputBuffer == NULL) {
+        fprintf(stderr, "Memory Allocation Error");
+        exit(1);
+      }
+    }
+    inputBuffer[inputCount++] = currentChar;
   }
   // ENSURE: inputBuffer stores all the input and ends with a space if input
   // is not empty
 
+  // If the input is empty, exit the program
+  if (inputCount == 0) {
+    exit(0);
+  }
   // Process the inputBuffer and store each frobnicated text as an element into
   // lineBuffer.
-
+  char *line = inputBuffer;
+  for (int i = 0; i < inputCount; i++) {
+    
+  }
   // ENSURE: lineBuffer is an array of pointer to frobnicated texts
 
   // sort the lineBuffer
