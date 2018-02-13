@@ -107,7 +107,7 @@ int main(void)
     for (int j = 0; lineBuffer[i][j] != ' '; j++) {
       printf("%c", lineBuffer[i][j]);
     }
-    printf(' ');
+    printf("%c", ' ');
   }
 
   free(lineBuffer);
