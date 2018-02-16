@@ -30,15 +30,17 @@ void checkDuplicate(const char *from) {
 /*
   If the character is in the string, then return the index of its first occurance.
   Else, return -1;
+
+  from and to are of the same length
 */
-int findChar(char c, const char *from) {
+char convertChar(char c, const char *from, const char *to) {
   int strlength = strlen(from);
   for (int i = 0; i < strlength; i++) {
     if (c == from[i]) {
-      return i;
+      return to[i];
     }
   }
-  return -1;
+  return c;
 }
 
 int main(int argc, const char *argv[]) {
@@ -60,5 +62,10 @@ int main(int argc, const char *argv[]) {
   checkDuplicate(from);
   
   // Main stage: Transliterate the characters
-
+  char currentChar;
+  int findResult;
+  while (!feof(stdin)) {
+    currentChar = getchar();
+    putchar(convertChar(currentChar, from, to));
+  }
 }
