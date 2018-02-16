@@ -1,23 +1,30 @@
 #include<stdio.h>
-#include <stdlib.h>
-#include <search.h>
+#include<stdlib.h>
 #include <string.h>
 
+int cmp(const void * a, const void * b) {
+   return ( *(char*)a - *(char*)b );
+}
+ 
 void checkDuplicate(const char *from) {
-  // We are going to use hashtable to check duplication
-  ENTRY e, *ep;
-  for (int i = 0; i < strlen(from); i++) {
-    e.key = from[i];
-    e.data = (void *) i;
-    ep = hsearch(e, FIND);
-    if (ep) {
-      fprintf(stderr, "Duplicate byte in from: %c\n", from[i]);
+  // Because we do not have a hashtable, we are going to use sorting to speed
+  // up algorithm
+  char * copy = malloc(strlen(from) + 1);
+  if (!copy) {
+    fprintf(stderr, "Memory allocation error.\n");
+    exit(1);
+  } 
+  strcpy(copy, from);
+  qsort(copy, strlen(copy), sizeof(char), cmp);
+  int strlength = strlen(copy);
+  // strlength cannot be 0, because if it is, then from operand does not exist
+  for (int i = 0; i < strlength - 1; i++) {
+    if (copy[i] == copy[i + 1]) {
+      fprintf(stderr, "Duplicate character in from.\n");
       exit(1);
-    } 
-    else {
-      ep = hsearch(e, ENTER);
     }
   }
+  free(copy);
 }
 
 int main(int argc, const char *argv[]) {
