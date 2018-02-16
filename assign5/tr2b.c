@@ -27,6 +27,20 @@ void checkDuplicate(const char *from) {
   free(copy);
 }
 
+/*
+  If the character is in the string, then return the index of its first occurance.
+  Else, return -1;
+*/
+int findChar(char c, const char *from) {
+  int strlength = strlen(from);
+  for (int i = 0; i < strlength; i++) {
+    if (c == from[i]) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 int main(int argc, const char *argv[]) {
   // First parse the argument
   // Check if the number of arguments is correct
@@ -45,7 +59,6 @@ int main(int argc, const char *argv[]) {
   // Check if from has duplicate byte in from
   checkDuplicate(from);
   
-  // We will first build a hashtable that maps from from[i] to to[i], for all
-  // 0 <= i < len(from)
+  // Main stage: Transliterate the characters
 
 }
