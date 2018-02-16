@@ -1,8 +1,18 @@
 #include<stdio.h>
+#include <stdlib.h>
+#include <search.h>
 
-/* 
-Note: By all means I intend to use a hashtable for this program. Sadly, it
-is not available in standard C libraries. So, I am just going to use an 
-inefficient algorithm here rather than implementing a hashtable from scratch.
-*/
+char *data[] = { "alpha", "bravo", "charlie", "delta",
+     "echo", "foxtrot", "golf", "hotel", "india", "juliet",
+     "kilo", "lima", "mike", "november", "oscar", "papa",
+     "quebec", "romeo", "sierra", "tango", "uniform",
+     "victor", "whisky", "x-ray", "yankee", "zulu"
+};
 
+// As a first step, we will get comfortable with getchar and stdin
+int main() {
+  while (!feof(stdin)) {
+    fputc(fgetc(stdin), stdout);
+  }
+  return 0;
+}
