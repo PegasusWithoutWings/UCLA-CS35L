@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 int frobcmp (char const* s1, char const* s2) {
   for ( ; *s1 == *s2; s1++, s2++) {
@@ -25,6 +26,20 @@ int main(void)
   char currentChar;
   char *inputBuffer, **lineBuffer;
   int inputCount = 0, inputBufferSize = 20, lineNumber = 0;
+
+  // If the stdin is a file, try to get its size
+	struct stat fileStat;
+
+	if(fstat(0, &fileStat) < 0)
+	{
+		fprintf( stderr, "Error: cannot read data from stdin\n");
+		exit(1);
+	}
+  // If the file is a regular file, set the buffer size to the file size
+  if (S_ISREG(fileStat.st_mode)) {
+    inputBuffer = (char*) malloc(sizeof(char) * fileStat.st_size);
+  }
+
   // The inputBuffer by default can store 20 characters
   inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
   if (inputBuffer == NULL) {
