@@ -2,16 +2,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 #define DEFAULT_BUFFER_SIZE 20
+#define DELIMITER 32 // space
+
+char decrypt(char c) {
+  return c ^ 42;
+}
 
 int frobcmp (char const* s1, char const* s2) {
   for ( ; *s1 == *s2; s1++, s2++) {
-    if (*s1 == ' '){
+    if (*s1 == DELIMITER){
       return 0;
     }
   }
-  return ((*s1 ^ 42) < (*s2 ^ 42)) ? -1 : 1;
+  return (decrypt(*s1) < decrypt(*s2)) ? -1 : 1;
 }
 
 // This is a wrapper function to use frobcmp in qsort
@@ -40,7 +46,7 @@ int getBufferSize(void) {
 This program reads frobnicated text lines from standard input, and writes a 
 sorted version to standard output in frobnicated form.
 */
-int main(void)
+int main(int argc, const char *argv[])
 { 
   // Variable declarations
   char currentChar;
@@ -61,9 +67,9 @@ int main(void)
       // Make sure that if the file is nonempty, the output ends with a 
       // trailing space
       if (inputCount > 0) {
-        // Check if the last input is a space
-        if (inputBuffer[inputCount - 1] != ' ') {
-          inputBuffer[inputCount++] = ' ';
+        // Check if the last input is a delimiter, that is, the end of a line
+        if (inputBuffer[inputCount - 1] != DELIMITER) {
+          inputBuffer[inputCount++] = DELIMITER;
           lineNumber++;
         }
       }
@@ -88,7 +94,7 @@ int main(void)
         exit(1);
       }
     }
-    if (currentChar == ' ') {
+    if (currentChar == DELIMITER) {
       lineNumber++;
     } 
     inputBuffer[inputCount++] = currentChar;
@@ -99,7 +105,7 @@ int main(void)
     exit(0);
   }
 
-  // ENSURE: inputBuffer stores all the input and ends with a space 
+  // ENSURE: inputBuffer stores all the input and ends with a space
   // Process the inputBuffer and store each frobnicated text as an element into
   // lineBuffer.
   lineBuffer = (char **) malloc(sizeof(char *) * lineNumber);
@@ -109,7 +115,7 @@ int main(void)
   }
   char *line = inputBuffer;
   for (int i = 0, lineNumber = 0; i < inputCount; i++) {
-    if (inputBuffer[i] == ' ') {
+    if (inputBuffer[i] == DELIMITER) {
       lineBuffer[lineNumber++] = line;
       line = inputBuffer + i + 1;
     }
@@ -120,10 +126,10 @@ int main(void)
   qsort(lineBuffer, lineNumber, sizeof(char *), &compar);
   // Output the result of qsort into stdout
   for (int i = 0; i < lineNumber; i++) {
-    for (int j = 0; lineBuffer[i][j] != ' '; j++) {
+    for (int j = 0; lineBuffer[i][j] != DELIMITER; j++) {
       printf("%c", lineBuffer[i][j]);
     }
-    printf("%c", ' ');
+    printf("%c", DELIMITER);
   }
 
   free(lineBuffer);
