@@ -1,14 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int cmp(const void * a, const void * b) {
    return ( *(char*)a - *(char*)b );
 }
  
 void checkDuplicate(const char *from) {
-  // Because we do not have a hashtable, we are going to use sorting to speed
-  // up algorithm
+  // Because we do not have a hashtable in the stdlib, we are going to use 
+  // sorting to speed up algorithm
   char * copy = malloc(strlen(from) + 1);
   if (!copy) {
     fprintf(stderr, "Memory allocation error.\n");
@@ -62,10 +63,9 @@ int main(int argc, const char *argv[]) {
   checkDuplicate(from);
   
   // Main stage: Transliterate the characters
-  char c = read(0, &c, 1);
-  while (!c){
+  char c;
+  while (read(0, &c, 1)){
     c = convertChar(c, from, to);
     write(1, &c, 1);
-    c = read(0, &c, 1);
   }
 }
