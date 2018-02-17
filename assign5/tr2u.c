@@ -62,10 +62,10 @@ int main(int argc, const char *argv[]) {
   checkDuplicate(from);
   
   // Main stage: Transliterate the characters
-  char currentChar;
-  int findResult;
-  while (!feof(stdin)) {
-    currentChar = getchar();
-    putchar(convertChar(currentChar, from, to));
+  char c = read(0, &c, 1);
+  while (!c){
+    c = convertChar(c, from, to);
+    write(1, &c, 1);
+    c = read(0, &c, 1);
   }
 }
