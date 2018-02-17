@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#define DEFAULT_BUFFER_SIZE 20
+
 int frobcmp (char const* s1, char const* s2) {
   for ( ; *s1 == *s2; s1++, s2++) {
     if (*s1 == ' '){
@@ -16,17 +18,8 @@ int frobcmp (char const* s1, char const* s2) {
 int compar (const void *line1, const void *line2) {
   return frobcmp(*((const char **) line1), *((const char **) line2));
 }
-/*
-This program reads frobnicated text lines from standard input, and writes a 
-sorted version to standard output in frobnicated form.
-*/
-int main(void)
-{ 
-  // Variable declarations
-  char currentChar;
-  char *inputBuffer, **lineBuffer;
-  int inputCount = 0, inputBufferSize = 20, lineNumber = 0;
 
+int getBufferSize(void) {
   // If the stdin is a file, try to get its size
 	struct stat fileStat;
 
@@ -37,10 +30,24 @@ int main(void)
 	}
   // If the file is a regular file, set the buffer size to the file size
   if (S_ISREG(fileStat.st_mode)) {
-    inputBuffer = (char*) malloc(sizeof(char) * fileStat.st_size);
+    return fileStat.st_size;
   }
+  else {
+    return DEFAULT_BUFFER_SIZE;
+  }
+}
+/*
+This program reads frobnicated text lines from standard input, and writes a 
+sorted version to standard output in frobnicated form.
+*/
+int main(void)
+{ 
+  // Variable declarations
+  char currentChar;
+  char *inputBuffer, **lineBuffer;
+  int inputCount = 0, inputBufferSize = getBufferSize(), lineNumber = 0;
 
-  // The inputBuffer by default can store 20 characters
+
   inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
   if (inputBuffer == NULL) {
     fprintf(stderr, "Memory Allocation Error");
