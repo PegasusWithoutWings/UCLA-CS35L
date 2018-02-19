@@ -72,12 +72,11 @@ int main(int argc, const char *argv[])
   char currentChar;
   char *inputBuffer, **lineBuffer;
   int inputCount = 0, inputBufferSize = getBufferSize(), lineNumber = 0;
-  static int ignoreCase = 0;
 
   // Parse arguments
   if (argc == 2) {
-    if (strcmp(argv[1], "-f")) {
-      ignoreCase = 1;
+    if (!strcmp(argv[1], "-f")) {
+      toUpperOpt = 1;
     }
   }
   inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
