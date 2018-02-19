@@ -11,5 +11,5 @@ def encrypt(word):
 words = [word.strip() for word in open("/usr/share/dict/words", 'r').readlines()]
 output = open("rand_words.txt", 'w')
 
-for word in choices(words, k = 5000000):
+for word in choices(words, k = 1000000):
   output.write(encrypt(word) + ' ')
