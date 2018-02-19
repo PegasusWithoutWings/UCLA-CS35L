@@ -1,35 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <string.h>
 
-int frobcmp (char const* s1, char const* s2) {
-  for ( ; *s1 == *s2; s1++, s2++) {
-    if (*s1 == ' '){
-      return 0;
-    }
+#define DEFAULT_BUFFER_SIZE 20
+#define DELIMITER ' ' // space
+
+// toUpper is an option of the program; by default, it is 0
+int toUpperOpt= 0;
+
+char decrypt(char c) {
+  char ret = c ^ 42;
+  if (toUpperOpt) {
+    return toupper((unsigned) ret);
   }
-  return ((*s1 ^ 42) < (*s2 ^ 42)) ? -1 : 1;
+  return ret;
+}
+int frobcmp (char const* s1, char const* s2) {
+  char c1, c2;
+  while (*s1 != DELIMITER && *s2 != DELIMITER) {
+    c1 = decrypt(*s1);
+    c2 = decrypt(*s2);
+    if (c1 != c2) {
+      return c1 - c2;
+    }
+    s1++;
+    s2++;
+  } 
+  if(*s1 == DELIMITER && *s2 == DELIMITER) {
+    return 0; 
+  }
+  else if (*s1 == DELIMITER) {
+    return -1;
+  }
+  else if (*s2 == DELIMITER) {
+    return 1;
+  }
 }
 
 // This is a wrapper function to use frobcmp in qsort
 int compar (const void *line1, const void *line2) {
   return frobcmp(*((const char **) line1), *((const char **) line2));
 }
+
+int getBufferSize(void) {
+  // If the stdin is a file, try to get its size
+	struct stat fileStat;
+
+	if(fstat(0, &fileStat) < 0)
+	{
+		fprintf( stderr, "Error: cannot read data from stdin\n");
+		exit(1);
+	}
+  // If the file is a regular file, set the buffer size to the file size
+  if (S_ISREG(fileStat.st_mode)) {
+    return fileStat.st_size;
+  }
+  else {
+    return DEFAULT_BUFFER_SIZE;
+  }
+}
 /*
 This program reads frobnicated text lines from standard input, and writes a 
 sorted version to standard output in frobnicated form.
 */
-int main(void)
+int main(int argc, const char *argv[])
 { 
   // Variable declarations
   char currentChar;
   char *inputBuffer, **lineBuffer;
-  int inputCount, inputBufferSize, lineNumber;
+  int inputCount = 0, inputBufferSize = getBufferSize(), lineNumber = 0;
+  static int ignoreCase = 0;
 
-  inputCount = 0;
-  lineNumber = 0;
-  inputBufferSize = 20;
-  // The inputBuffer by default can store 20 characters
+  // Parse arguments
+  if (argc == 2) {
+    if (strcmp(argv[1], "-f")) {
+      ignoreCase = 1;
+    }
+  }
   inputBuffer = (char*) malloc(sizeof(char) * inputBufferSize);
   if (inputBuffer == NULL) {
     fprintf(stderr, "Memory Allocation Error");
@@ -43,9 +93,9 @@ int main(void)
       // Make sure that if the file is nonempty, the output ends with a 
       // trailing space
       if (inputCount > 0) {
-        // Check if the last input is a space
-        if (inputBuffer[inputCount - 1] != ' ') {
-          inputBuffer[inputCount++] = ' ';
+        // Check if the last input is a delimiter, that is, the end of a line
+        if (inputBuffer[inputCount - 1] != DELIMITER) {
+          inputBuffer[inputCount++] = DELIMITER;
           lineNumber++;
         }
       }
@@ -70,7 +120,7 @@ int main(void)
         exit(1);
       }
     }
-    if (currentChar == ' ') {
+    if (currentChar == DELIMITER) {
       lineNumber++;
     } 
     inputBuffer[inputCount++] = currentChar;
@@ -81,7 +131,7 @@ int main(void)
     exit(0);
   }
 
-  // ENSURE: inputBuffer stores all the input and ends with a space 
+  // ENSURE: inputBuffer stores all the input and ends with a space
   // Process the inputBuffer and store each frobnicated text as an element into
   // lineBuffer.
   lineBuffer = (char **) malloc(sizeof(char *) * lineNumber);
@@ -91,7 +141,7 @@ int main(void)
   }
   char *line = inputBuffer;
   for (int i = 0, lineNumber = 0; i < inputCount; i++) {
-    if (inputBuffer[i] == ' ') {
+    if (inputBuffer[i] == DELIMITER) {
       lineBuffer[lineNumber++] = line;
       line = inputBuffer + i + 1;
     }
@@ -102,10 +152,10 @@ int main(void)
   qsort(lineBuffer, lineNumber, sizeof(char *), &compar);
   // Output the result of qsort into stdout
   for (int i = 0; i < lineNumber; i++) {
-    for (int j = 0; lineBuffer[i][j] != ' '; j++) {
+    for (int j = 0; lineBuffer[i][j] != DELIMITER; j++) {
       printf("%c", lineBuffer[i][j]);
     }
-    printf("%c", ' ');
+    printf("%c", DELIMITER);
   }
 
   free(lineBuffer);
