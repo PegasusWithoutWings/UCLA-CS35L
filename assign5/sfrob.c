@@ -86,20 +86,7 @@ int main(int argc, const char *argv[])
   }
   // Reading from the standard input stream and store them into the 
   // inputBuffer, until we reach EOF or reads an error
-  while (1) {
-    currentChar = getchar();
-    if (feof(stdin)) { // If reached the end of file
-      // Make sure that if the file is nonempty, the output ends with a 
-      // trailing space
-      if (inputCount > 0) {
-        // Check if the last input is a delimiter, that is, the end of a line
-        if (inputBuffer[inputCount - 1] != DELIMITER) {
-          inputBuffer[inputCount++] = DELIMITER;
-          lineNumber++;
-        }
-      }
-      break;
-    }
+  while (read(0, &currentChar, 1)) {
     if (ferror(stdin)) { // if input has an error
       fprintf(stderr, "IO Error");
       exit(1);
@@ -123,6 +110,17 @@ int main(int argc, const char *argv[])
       lineNumber++;
     } 
     inputBuffer[inputCount++] = currentChar;
+  }
+
+  // After reaching the end of file
+  // Make sure that if the file is nonempty, the output ends with a 
+  // trailing space
+  if (inputCount > 0) {
+    // Check if the last input is a delimiter, that is, the end of a line
+    if (inputBuffer[inputCount - 1] != DELIMITER) {
+      inputBuffer[inputCount++] = DELIMITER;
+      lineNumber++;
+    }
   }
 
   // If the input is empty, exit the program
@@ -150,11 +148,12 @@ int main(int argc, const char *argv[])
   // sort the lineBuffer
   qsort(lineBuffer, lineNumber, sizeof(char *), &compar);
   // Output the result of qsort into stdout
+  char delim = DELIMITER;
   for (int i = 0; i < lineNumber; i++) {
     for (int j = 0; lineBuffer[i][j] != DELIMITER; j++) {
-      printf("%c", lineBuffer[i][j]);
+      write(1, &lineBuffer[i][j], 1);
     }
-    printf("%c", DELIMITER);
+    write(1, &delim, 1);
   }
 
   free(lineBuffer);
