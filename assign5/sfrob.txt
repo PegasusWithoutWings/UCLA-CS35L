@@ -1,0 +1,5 @@
+sfrob   0m2.938s
+sfrobu  0m22.789s
+sfrobs  0m14.241s
+sfrobu  0m23.274s
+sfrobs  0m14.205s
