@@ -2,3 +2,4 @@ coreutils*
 *.out
 .ipynb_checkpoints
 assign5/test.txt
+rand_floats.txt
