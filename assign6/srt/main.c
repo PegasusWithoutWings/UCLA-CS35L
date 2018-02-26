@@ -157,7 +157,14 @@ enum { max_color = 255 };
 /* z value for ray */
 enum { z = 1 };
 
-void render_scene(scene_t *scene_ptr) {
+typedef struct
+{
+    scene_t *scene_ptr;
+    int thread_id;
+    int nthreads;
+} args_t;
+
+void render_scene(void *args_holder) {
     Vec3 camera_pos;
     set( camera_pos, 0., 0., -4. );
     Vec3 camera_dir;
@@ -166,6 +173,10 @@ void render_scene(scene_t *scene_ptr) {
     Vec3 bg_color;
     set( bg_color, 0.8, 0.8, 1 );
 
+    args_t *args = (args_t*) args_holder;
+    const int thread_id = args -> thread_id;
+    const int nthreads = args -> nthreads;
+    const scene_t *scene_ptr = args -> scene_ptr;
     const double pixel_dx = tan( 0.5*camera_fov ) / ((double)width*0.5);
     const double pixel_dy = tan( 0.5*camera_fov ) / ((double)height*0.5);
     const double subsample_dx
@@ -179,7 +190,8 @@ void render_scene(scene_t *scene_ptr) {
     for( int px=0; px<width; ++px )
     {
         const double x = pixel_dx * ((double)( px-(width/2) ));
-        for( int py=0; py<height; ++py )
+        for( int py=height * ((double)thread_id / nthreads); 
+            py<(int)(height * ((double)(thread_id + 1) / nthreads)); ++py )
         {
             const double y = pixel_dy * ((double)( py-(height/2) ));
             Vec3 pixel_color;
@@ -261,11 +273,35 @@ main( int argc, char **argv )
             scene.sphere_count,
             scene.light_count );
 
+    /* Create the threads */
+    pthread_t *tids = (pthread_t*) malloc(sizeof(pthread_t) * nthreads);
+    if (tids == NULL) {
+        fprintf(stderr, "ERROR: Memory Allocation.\n");
+    }
+    args_t *args = (args_t*) malloc(sizeof(args_t) * nthreads);
+    if (args == NULL) {
+        fprintf(stderr, "ERROR: Memory Allocation.\n");
+    }
 
+    /* Initialize args parameter */
+    for (int i = 0; i < nthreads; i++) {
+        args[i].nthreads = nthreads;
+        args[i].scene_ptr = &scene;
+        args[i].thread_id = i;
+    }
 
-    render_scene( &scene );
+    /* Start multi-thread rendering */
+    for (int i = 0; i < nthreads; i++)
+        if (pthread_create(&tids[i], NULL, render_scene, (void*) &args[i]))
+            fprintf(stderr, "ERROR: Cannot create threads.\n");
+
+    for (int i = 0; i < nthreads; i++)
+        if (pthread_join(tids[i], NULL))
+            fprintf(stderr, "ERROR: Cannot join threads.\n");
 
     free_scene( &scene );
+    free(tids);
+    free(args);
 
     if( ferror( stdout ) || fclose( stdout ) != 0 )
     {
