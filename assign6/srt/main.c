@@ -164,6 +164,8 @@ typedef struct
     int nthreads;
 } args_t;
 
+int result_image[width][height][3];
+
 void *render_scene(void *args_holder) {
     Vec3 camera_pos;
     set( camera_pos, 0., 0., -4. );
@@ -240,16 +242,11 @@ void *render_scene(void *args_holder) {
             scaled_color[2] = gamma( pixel_color[2] ) * max_color;
 
             /* enforce caps, replace with real gamma */
-            for( int i=0; i<3; i++)
+            for( int i=0; i<3; i++) {
                 scaled_color[i] = max( min(scaled_color[i], 255), 0);
-
-            /* write this pixel out to disk. ppm is forgiving about whitespace,
-             * but has a maximum of 70 chars/line, so use one line per pixel
-             */
-            printf( "%.0f %.0f %.0f\n",
-		    scaled_color[0], scaled_color[1], scaled_color[2] );
+                result_image[px][py][i] = scaled_color[i];
+            }
         }
-        printf( "\n" );
     }
     return NULL;
 }
@@ -303,6 +300,19 @@ main( int argc, char **argv )
     free_scene( &scene );
     free(tids);
     free(args);
+
+    /* Print out result */
+    for( int px=0; px<width; ++px ) {
+        for( int py=0; py<height; ++py ) {
+            /* write this pixel out to disk. ppm is forgiving about whitespace,
+             * but has a maximum of 70 chars/line, so use one line per pixel
+             */
+            printf( "%.0f %.0f %.0f\n",
+		    result_image[px][py][0], result_image[px][py][1], 
+            result_image[px][py][2] );
+        }
+        printf( "\n" );
+    }
 
     if( ferror( stdout ) || fclose( stdout ) != 0 )
     {
