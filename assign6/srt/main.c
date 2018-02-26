@@ -164,7 +164,7 @@ typedef struct
     int nthreads;
 } args_t;
 
-void render_scene(void *args_holder) {
+void *render_scene(void *args_holder) {
     Vec3 camera_pos;
     set( camera_pos, 0., 0., -4. );
     Vec3 camera_dir;
@@ -292,7 +292,7 @@ main( int argc, char **argv )
 
     /* Start multi-thread rendering */
     for (int i = 0; i < nthreads; i++)
-        if (pthread_create(&tids[i], NULL, &render_scene, (void*) &args[i]))
+        if (pthread_create(&tids[i], NULL, render_scene, (void*) &args[i]))
             fprintf(stderr, "ERROR: Cannot create threads.\n");
 
     for (int i = 0; i < nthreads; i++)
