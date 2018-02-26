@@ -16,7 +16,7 @@
 
 CC = gcc
 CFLAGS = -std=gnu11 -g -O2 -Wall -Wextra -Wno-unused-parameter
-LDLIBS = -lm
+LDLIBS = -lm -lpthread
 
 all: srt
 
