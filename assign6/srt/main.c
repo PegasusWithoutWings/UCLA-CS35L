@@ -174,9 +174,9 @@ void render_scene(void *args_holder) {
     set( bg_color, 0.8, 0.8, 1 );
 
     args_t *args = (args_t*) args_holder;
+    scene_t *scene_ptr = args -> scene_ptr;
     const int thread_id = args -> thread_id;
     const int nthreads = args -> nthreads;
-    const scene_t *scene_ptr = args -> scene_ptr;
     const double pixel_dx = tan( 0.5*camera_fov ) / ((double)width*0.5);
     const double pixel_dy = tan( 0.5*camera_fov ) / ((double)height*0.5);
     const double subsample_dx
@@ -292,7 +292,7 @@ main( int argc, char **argv )
 
     /* Start multi-thread rendering */
     for (int i = 0; i < nthreads; i++)
-        if (pthread_create(&tids[i], NULL, render_scene, (void*) &args[i]))
+        if (pthread_create(&tids[i], NULL, &render_scene, (void*) &args[i]))
             fprintf(stderr, "ERROR: Cannot create threads.\n");
 
     for (int i = 0; i < nthreads; i++)
