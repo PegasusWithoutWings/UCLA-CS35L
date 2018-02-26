@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include <pthread.h>
 
 
 static double dirs[6][3] =
@@ -156,32 +157,7 @@ enum { max_color = 255 };
 /* z value for ray */
 enum { z = 1 };
 
-int
-main( int argc, char **argv )
-{
-    int nthreads = argc == 2 ? atoi( argv[1] ) : 0;
-
-    if( nthreads < 1 )
-    {
-      fprintf( stderr, "%s: usage: %s NTHREADS\n", argv[0], argv[0] );
-      return 1;
-    }
-
-    if( nthreads != 1 )
-    {
-      fprintf( stderr, "%s: Multithreading is not supported yet.\n", argv[0] );
-      return 1;
-    }
-
-    scene_t scene = create_sphereflake_scene( sphereflake_recursion );
-
-    /* Write the image format header */
-    /* P3 is an ASCII-formatted, color, PPM file */
-    printf( "P3\n%d %d\n%d\n", width, height, max_color );
-    printf( "# Rendering scene with %d spheres and %d lights\n",
-            scene.sphere_count,
-            scene.light_count );
-
+void render_scene(scene_t *scene) {
     Vec3 camera_pos;
     set( camera_pos, 0., 0., -4. );
     Vec3 camera_dir;
@@ -263,6 +239,31 @@ main( int argc, char **argv )
         }
         printf( "\n" );
     }
+}
+
+int
+main( int argc, char **argv )
+{
+    int nthreads = argc == 2 ? atoi( argv[1] ) : 0;
+
+    if( nthreads < 1 )
+    {
+      fprintf( stderr, "%s: usage: %s NTHREADS\n", argv[0], argv[0] );
+      return 1;
+    }
+
+    scene_t scene = create_sphereflake_scene( sphereflake_recursion );
+
+    /* Write the image format header */
+    /* P3 is an ASCII-formatted, color, PPM file */
+    printf( "P3\n%d %d\n%d\n", width, height, max_color );
+    printf( "# Rendering scene with %d spheres and %d lights\n",
+            scene.sphere_count,
+            scene.light_count );
+
+
+
+    render_scene(&scene);
 
     free_scene( &scene );
 
