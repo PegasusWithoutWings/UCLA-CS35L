@@ -157,7 +157,7 @@ enum { max_color = 255 };
 /* z value for ray */
 enum { z = 1 };
 
-void render_scene(scene_t *scene) {
+void render_scene(scene_t *scene_ptr) {
     Vec3 camera_pos;
     set( camera_pos, 0., 0., -4. );
     Vec3 camera_dir;
@@ -206,7 +206,7 @@ void render_scene(scene_t *scene) {
                     copy( sample_color, bg_color );
                     /* trace the ray from the camera that
                      * passes through this pixel */
-                    trace( &scene, sample_color, &pixel_ray, 0 );
+                    trace( scene_ptr, sample_color, &pixel_ray, 0 );
                     /* sum color for subpixel AA */
                     add( pixel_color, pixel_color, sample_color );
                 }
@@ -263,7 +263,7 @@ main( int argc, char **argv )
 
 
 
-    render_scene(&scene);
+    render_scene( &scene );
 
     free_scene( &scene );
 
