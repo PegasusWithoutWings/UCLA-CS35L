@@ -251,6 +251,7 @@ void *render_scene(void *args_holder) {
         }
         printf( "\n" );
     }
+    return NULL;
 }
 
 int
