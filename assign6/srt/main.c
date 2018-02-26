@@ -164,7 +164,7 @@ typedef struct
     int nthreads;
 } args_t;
 
-int result_image[width][height][3];
+double result_image[width][height][3];
 
 void *render_scene(void *args_holder) {
     Vec3 camera_pos;
