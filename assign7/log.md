@@ -1,8 +1,6 @@
-# CS35L-Assignment 7: SSH Setup and Use in Applications
+# CS35L-Lab 7: SSH Setup and Use in Applications
 
-## Lab
-
-### Prelude
+## Prelude
 
 Because I am using the latest version of Macbook Pro that does not even have USB port, it took me some extra trouble to set the Baglebone up. First I have to borrow a Windows laptop from my friend and then walk through the setup instructions posted in Piazza. Then, after I get it connected to UCLA_WIFI, I can finally connect to it wirelessly and start working on it on my own Macbook. The internal ip address of Baglebone can be found in the output of `ifconfig` with label `inet address` under `wlan0` section. 
 
@@ -13,7 +11,7 @@ wlan0     Link encap:Ethernet  HWaddr 2c:f7:f1:06:6b:54
 
 Now I can start working on our Baglebone on my own laptop.
 
-### Server Setup
+## Server Setup
 
 1. We executed `ssh-keygen` to generate public and private keys in our Baglebone server. I choose not to add passphrase.
 
@@ -29,7 +27,7 @@ Now I can start working on our Baglebone on my own laptop.
 
 1. Asked Kevin to text me his public key and then added it to the `authorized_keys` file under the `.ssh` directory of the guest account.
 
-### Client Setup
+## Client Setup
 
 Now we will set up my Macbook Pro as a client to get connected to our Baglebone server. 
 
@@ -43,7 +41,7 @@ Now we will set up my Macbook Pro as a client to get connected to our Baglebone 
 
 1. The X forwarding works like a charm. I can run firefox on my Baglebone and see it on my own laptop.
 
-### SSH into Teammate David's Beaglebone
+## SSH into Teammate David's Beaglebone
 
 1. David has his Beaglebone connected to CR-3760-wifi.
 
@@ -53,7 +51,7 @@ Now we will set up my Macbook Pro as a client to get connected to our Baglebone 
 
 1. After he finished, I executed `ssh guest@10.97.85.240` and successfully connected to David's Beaglebone.
 
-### SSH into Teammate Kevin's Beaglebone
+## SSH into Teammate Kevin's Beaglebone
 
 1. Kevin has his Beaglebone connected to CR-3760-wifi.
 
@@ -62,11 +60,3 @@ Now we will set up my Macbook Pro as a client to get connected to our Baglebone 
 1. I texted Kevin my public key and asked him to add my public key into his `authorized_keys` file under `.ssh` directory in the guest account.
 
 1. After he finished, I executed `ssh guest@10.97.85.236` and successfully connected to Kevin's Beaglebone.
-
-## Homework
-
-- Suppose the other teams really had been observing all the bytes going across the network. Our resulting network would still be secure because all the information is encrypted and the tapper cannot decrypt the message without having access to the private key.
-
-  - Even if I assumed the other teams had also tapped our keyboards and had observed all of my team's keystrokes, our network is still secure because we did not type out the private key during any step of the process. Thus, the attacker would still have no access to the private key and cannot decrypt the bytes going across.
-
-  - However, if I assume that we are booting off USB and other teams temporarily had physical control of the USB, then we will be screwed. The attackers can carry out all kinds of attack through the USB port. For example, he can insert a USB drive that functions as a boot device and inject malware into my system during the boot process. That way, he will have complete control over our devices and the resulting network will surely not be secure.
