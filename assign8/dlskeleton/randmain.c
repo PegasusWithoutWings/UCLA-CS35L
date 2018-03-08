@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <dlfcn.h>
+#include <stdlib.h>
 #include "randcpuid.h"
 
 static bool
@@ -24,11 +25,12 @@ static void *
 get_func(const char *func_name, void *dl_handle) {
   void (*myfunc)(int *);
   char *error;
-  myfunc = dlsym(dl_handle, "hardware_rand64_init");
+  myfunc = dlsym(dl_handle, func_name);
   if ((error = dlerror()) != NULL) {
-    printf ("dlsym hardware_rand64_init error - %s\n", error);
-    return 1;
+    printf ("dlsym %s error - %s\n", func_name, error);
+    exit(1);
   }
+  return myfunc;
 }
 
 static void *
@@ -36,7 +38,7 @@ Dl_open(const char *lib_name, int __mode) {
   void *result = dlopen(lib_name, __mode);
   if (!result) {
     printf("dlopen() error - %s\n", dlerror());
-    return 1;
+    exit(1);
   }
   return result;
 }
@@ -77,14 +79,14 @@ main (int argc, char **argv)
   void *dl_handle;
   if (rdrand_supported ())
     {
-      dl_handle = Dlopen("randlibhw.so", RTLD_LAZY);
+      dl_handle = Dl_open("randlibhw.so", RTLD_LAZY);
       initialize = get_func("software_rand64_init", dl_handle);
       rand64 = get_func("hardware_rand64", dl_handle);
       finalize = get_func("hardware_rand64_fini", dl_handle);
     }
   else
     {
-      dl_handle = Dlopen("randlibsw.so", RTLD_LAZY);
+      dl_handle = Dl_open("randlibsw.so", RTLD_LAZY);
       initialize = get_func("software_rand64_init", dl_handle);
       rand64 = get_func("software_rand64", dl_handle);
       finalize = get_func("software_rand64_fini", dl_handle);
