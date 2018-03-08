@@ -37,7 +37,7 @@ dlskeleton.tgz: $(skeleton_files)
 	tar -czf $@ --mode=a-w $(skeleton_files)
 
 submission: dlsubmission.tgz
-submission_files = lab.txt randmain.mk \
+submission_files = lab.pdf randmain.mk \
   randcpuid.c randlibhw.c randlibsw.c randmain.c \
   $(skeleton_files)
 dlsubmission.tgz: $(submission_files)
