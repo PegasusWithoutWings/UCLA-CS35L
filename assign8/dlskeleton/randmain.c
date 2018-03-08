@@ -20,6 +20,27 @@ writebytes (unsigned long long x, int nbytes)
   return 0 <= putchar ('\n');
 }
 
+static void *
+get_func(const char *func_name, void *dl_handle) {
+  void (*myfunc)(int *);
+  char *error;
+  myfunc = dlsym(dl_handle, "hardware_rand64_init");
+  if ((error = dlerror()) != NULL) {
+    printf ("dlsym hardware_rand64_init error - %s\n", error);
+    return 1;
+  }
+}
+
+static void *
+Dl_open(const char *lib_name, int __mode) {
+  void *result = dlopen(lib_name, __mode);
+  if (!result) {
+    printf("dlopen() error - %s\n", dlerror());
+    return 1;
+  }
+  return result;
+}
+
 /* Main program, which outputs N bytes of random data.  */
 int
 main (int argc, char **argv)
@@ -53,18 +74,20 @@ main (int argc, char **argv)
   void (*initialize) (void);
   unsigned long long (*rand64) (void);
   void (*finalize) (void);
-  void *dl_handlle;
+  void *dl_handle;
   if (rdrand_supported ())
     {
-      initialize = hardware_rand64_init;
-      rand64 = hardware_rand64;
-      finalize = hardware_rand64_fini;
+      dl_handle = Dlopen("randlibhw.so", RTLD_LAZY);
+      initialize = get_func("software_rand64_init", dl_handle);
+      rand64 = get_func("hardware_rand64", dl_handle);
+      finalize = get_func("hardware_rand64_fini", dl_handle);
     }
   else
     {
-      initialize = software_rand64_init;
-      rand64 = software_rand64;
-      finalize = software_rand64_fini;
+      dl_handle = Dlopen("randlibsw.so", RTLD_LAZY);
+      initialize = get_func("software_rand64_init", dl_handle);
+      rand64 = get_func("software_rand64", dl_handle);
+      finalize = get_func("software_rand64_fini", dl_handle);
     }
 
   initialize ();
