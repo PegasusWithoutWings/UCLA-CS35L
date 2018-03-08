@@ -1,15 +1,16 @@
 #include <stdlib.h>
+#include <immintrin.h>
 #include "randlib.h"
 
 /* Hardware implementation.  */
 /* Initialize the hardware rand64 implementation.  */
-static void
+void
 hardware_rand64_init (void)
 {
 }
 
 /* Return a random value, using hardware operations.  */
-static unsigned long long
+unsigned long long
 hardware_rand64 (void)
 {
   unsigned long long int x;
@@ -19,7 +20,7 @@ hardware_rand64 (void)
 }
 
 /* Finalize the hardware rand64 implementation.  */
-static void
+void
 hardware_rand64_fini (void)
 {
 }

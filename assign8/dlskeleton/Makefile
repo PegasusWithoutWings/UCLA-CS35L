@@ -46,4 +46,4 @@ dlsubmission.tgz: $(submission_files)
 .PHONY: default clean skeleton submission
 
 clean:
-	rm -f *.o *.so *.so.* *.tgz randall randmain
+	rm -rf *.o *.so *.so.* *.tgz *.dSYM randall randmain

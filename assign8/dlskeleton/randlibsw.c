@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <immintrin.h>
 #include "randlib.h"
 
 /* Software implementation.  */
@@ -8,7 +9,7 @@
 static FILE *urandstream;
 
 /* Initialize the software rand64 implementation.  */
-static void
+void
 software_rand64_init (void)
 {
   urandstream = fopen ("/dev/urandom", "r");
@@ -17,7 +18,7 @@ software_rand64_init (void)
 }
 
 /* Return a random value, using software operations.  */
-static unsigned long long
+unsigned long long
 software_rand64 (void)
 {
   unsigned long long int x;
@@ -27,7 +28,7 @@ software_rand64 (void)
 }
 
 /* Finalize the software rand64 implementation.  */
-static void
+void
 software_rand64_fini (void)
 {
   fclose (urandstream);
