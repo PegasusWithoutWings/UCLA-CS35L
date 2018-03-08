@@ -80,7 +80,7 @@ main (int argc, char **argv)
   if (rdrand_supported ())
     {
       dl_handle = Dl_open("randlibhw.so", RTLD_LAZY);
-      initialize = get_func("software_rand64_init", dl_handle);
+      initialize = get_func("hardware_rand64_init", dl_handle);
       rand64 = get_func("hardware_rand64", dl_handle);
       finalize = get_func("hardware_rand64_fini", dl_handle);
     }
