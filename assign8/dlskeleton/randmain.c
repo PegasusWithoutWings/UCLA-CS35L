@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <errno.h>
+#include <dlfcn.h>
 #include "randcpuid.h"
 
 static bool
@@ -23,6 +24,7 @@ writebytes (unsigned long long x, int nbytes)
 int
 main (int argc, char **argv)
 {
+
   /* Check arguments.  */
   bool valid = false;
   long long nbytes;
@@ -51,6 +53,7 @@ main (int argc, char **argv)
   void (*initialize) (void);
   unsigned long long (*rand64) (void);
   void (*finalize) (void);
+  void *dl_handlle;
   if (rdrand_supported ())
     {
       initialize = hardware_rand64_init;
